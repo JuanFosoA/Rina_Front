@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import React, { useState } from 'react'
 
-const Profile = () => {
+const Search = () => {
   const [changeColor, setChangeColor] = useState(false)
 
   const handlePress = () => {
@@ -26,4 +26,4 @@ const styles = StyleSheet.create(
   }
 )
 
-export default Profile
+export default Search
