@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Profile = () => {
   return (
-    <SafeAreaView style={{ flex:1}}>
+    <SafeAreaView className='bg-slate-600 h-full' style={{ flex:1}}>
       <StatusBar barStyle="default" backgroundColor="white" />
       <View>
         

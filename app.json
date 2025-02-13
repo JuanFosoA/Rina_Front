@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "silver-wolf",
-    "slug": "silver-wolf",
+    "name": "rina-front",
+    "slug": "rina",
     "scheme": "menu",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,8 +25,17 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins":[
+    "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9442137b-28d6-49bf-a797-ec474b2e89a4"
+      }
+    },
+    "owner": "juanfosoa"
   }
 }
