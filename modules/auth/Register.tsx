@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { RegisterSchema } from "../../validations/schemas";
+import { authStyles } from "../../components/tokens";
 
 type RegisterFormData = z.infer<typeof RegisterSchema>;
 
@@ -21,89 +22,61 @@ export default function RegisterModule() {
   };
 
   return (
-    <View className="flex-1 justify-center px-6 bg-gray-100">
-      <Text className="text-xl font-bold text-center mb-4">Registro</Text>
+    <View className={authStyles.container}>
+      <Text className={authStyles.title}>Registro</Text>
 
-      <Text className="text-gray-700">Nombre</Text>
+      <Text className={authStyles.label}>Nombre</Text>
       <Controller
         control={control}
         name="name"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white"
-            placeholder="Nombre"
-            onChangeText={onChange}
-            value={value}
-          />
+          <TextInput className={authStyles.input} placeholder="Nombre" onChangeText={onChange} value={value} />
         )}
       />
-      {errors.name && <Text className="text-red-500">{errors.name.message}</Text>}
+      {errors.name && <Text className={authStyles.errorText}>{errors.name.message}</Text>}
 
-      <Text className="text-gray-700 mt-2">Correo</Text>
+      <Text className={authStyles.label}>Correo</Text>
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white"
-            placeholder="Correo"
-            onChangeText={onChange}
-            value={value}
-            keyboardType="email-address"
-          />
+          <TextInput className={authStyles.input} placeholder="Correo" onChangeText={onChange} value={value} keyboardType="email-address" />
         )}
       />
-      {errors.email && <Text className="text-red-500">{errors.email.message}</Text>}
+      {errors.email && <Text className={authStyles.errorText}>{errors.email.message}</Text>}
 
-      <Text className="text-gray-700 mt-2">Usuario</Text>
+      <Text className={authStyles.label}>Usuario</Text>
       <Controller
         control={control}
         name="user"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white"
-            placeholder="Usuario"
-            onChangeText={onChange}
-            value={value}
-          />
+          <TextInput className={authStyles.input} placeholder="Usuario" onChangeText={onChange} value={value} />
         )}
       />
-      {errors.user && <Text className="text-red-500">{errors.user.message}</Text>}
+      {errors.user && <Text className={authStyles.errorText}>{errors.user.message}</Text>}
 
-      <Text className="text-gray-700 mt-2">Contraseña</Text>
+      <Text className={authStyles.label}>Contraseña</Text>
       <Controller
         control={control}
         name="password"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white"
-            placeholder="Contraseña"
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry
-          />
+          <TextInput className={authStyles.input} placeholder="Contraseña" onChangeText={onChange} value={value} secureTextEntry />
         )}
       />
-      {errors.password && <Text className="text-red-500">{errors.password.message}</Text>}
+      {errors.password && <Text className={authStyles.errorText}>{errors.password.message}</Text>}
 
-      <Text className="text-gray-700 mt-2">Confirmar Contraseña</Text>
+      <Text className={authStyles.label}>Confirmar Contraseña</Text>
       <Controller
         control={control}
         name="confirm_password"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white"
-            placeholder="Confirmar Contraseña"
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry
-          />
+          <TextInput className={authStyles.input} placeholder="Confirmar Contraseña" onChangeText={onChange} value={value} secureTextEntry />
         )}
       />
-      {errors.confirm_password && <Text className="text-red-500">{errors.confirm_password.message}</Text>}
+      {errors.confirm_password && <Text className={authStyles.errorText}>{errors.confirm_password.message}</Text>}
 
-      <TouchableOpacity className="bg-blue-500 p-3 rounded-md mt-4" onPress={handleSubmit(onSubmit)}>
-        <Text className="text-white text-center font-bold">Registrarse</Text>
+      <TouchableOpacity className={authStyles.button} onPress={handleSubmit(onSubmit)}>
+        <Text className={authStyles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
     </View>
   );
