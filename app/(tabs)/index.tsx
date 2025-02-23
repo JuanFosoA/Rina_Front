@@ -3,23 +3,26 @@ import { Link } from 'expo-router'
 import React from 'react'
 
 import { bgRed } from '../../components/tokens'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
+import DailyMenu from '../../components/molecules/DailyMenu'
 
 const Index = () => {
   return (
-    <SafeAreaView>
-      <View>
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <DailyMenu/>
-        <Text className='text-4xl text-red-600'>Index</Text>
-        <Link href='/profile/details' >
-          <Text className={`bg-primary border border-secondary-100 rounded p-4 text-3xl`}>
-              Profile
-          </Text>
-        </Link>
-      </View>
-    </SafeAreaView>
+    <View>
+      <DailyMenu/>
+      <Text className='text-4xl text-red-600'>Index</Text>
+      <Link href='/profile/details' >
+        <Text className={`m-8 p-8 bg-primary border border-secondary-100 rounded text-3xl`}>
+            Profile
+        </Text>
+      </Link>
+      <Link href='/auth' >
+        <Text className={`m-8 p-8 bg-primary border border-secondary-100 rounded text-3xl`}>
+            Auth
+        </Text>
+      </Link>
+    </View>
+
   )
 }
 
