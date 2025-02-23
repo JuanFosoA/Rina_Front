@@ -1,3 +1,5 @@
+
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -15,7 +17,11 @@ module.exports = {
           100: '#ff9001',
           200: '#ff8e01'
         }
-      }
+      },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+        }
     },
   },
   plugins: [],
