@@ -9,11 +9,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '2B2D42',
-        secondary: '8D99AE',
-        tertiary: 'EDF2F4',
-        quaternary: 'EF233C',
-        fith:'D90429'
+        primary: '#2B2D42',
+        secondary: '#8D99AE',
+        tertiary: '#EDF2F4',
+        quaternary: '#EF233C',
+        fith:'#D90429'
       }
     },
   },

@@ -1,18 +1,18 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Link } from 'expo-router'
+import { authStyles } from '../../components/tokens'
 
 const Auth = () => {
   return (
-    <View>
-      <Text>Auth</Text>
-      <Link href='/auth/login' >
-        <Text className={`bg-primary border border-secondary-100 rounded p-4 text-3xl`}>
+    <View className={authStyles.container}>
+      <Link href='/auth/login' className={authStyles.button}>
+        <Text className={authStyles.buttonText}>
             login
         </Text>
       </Link>
-      <Link href='/auth/register' >
-        <Text className={`bg-primary border border-secondary-100 rounded p-4 text-3xl`}>
+      <Link href='/auth/register' className={authStyles.button} >
+        <Text className={authStyles.buttonText}>
             register
         </Text>
       </Link>

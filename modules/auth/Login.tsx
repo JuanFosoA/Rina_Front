@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { loginSchema } from "../../validations/schemas";
+import { authStyles } from "../../components/tokens";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -21,16 +22,16 @@ export default function LoginModule() {
   };
 
   return (
-    <View className="flex-1 justify-center px-6 bg-gray-100">
-      <Text className="text-2xl font-bold text-center mb-4">Iniciar Sesión</Text>
+    <View className={authStyles.container}>
+      <Text className={authStyles.title}>Iniciar Sesión</Text>
 
-      <Text className="text-gray-700 text-xl">Correo</Text>
+      <Text className={authStyles.label}>Correo</Text>
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange, value } }) => (
           <TextInput
-            className="border border-gray-300 p-2 bg-white h-14 rounded-md text-xl"
+            className={authStyles.input}
             placeholder="Correo"
             onChangeText={onChange}
             value={value}
@@ -38,15 +39,15 @@ export default function LoginModule() {
           />
         )}
       />
-      {errors.email && <Text className="text-red-500">{errors.email.message}</Text>}
+      {errors.email && <Text className={authStyles.errorText}>{errors.email.message}</Text>}
 
-      <Text className="text-gray-500 mt-2 text-xl">Contraseña</Text>
+      <Text className={authStyles.label}>Contraseña</Text>
       <Controller
         control={control}
         name="password"
         render={({ field: { onChange, value } }) => (
           <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white h-14 text-xl"
+            className={authStyles.input}
             placeholder="Contraseña"
             onChangeText={onChange}
             value={value}
@@ -54,10 +55,10 @@ export default function LoginModule() {
           />
         )}
       />
-      {errors.password && <Text className="text-red-500">{errors.password.message}</Text>}
+      {errors.password && <Text className={authStyles.errorText}>{errors.password.message}</Text>}
 
-      <TouchableOpacity className="bg-blue-500 p-3 rounded-md mt-4 h-14" onPress={handleSubmit(onSubmit)}>
-        <Text className="text-white text-center font-bold text-xl">Iniciar Sesión</Text>
+      <TouchableOpacity className={authStyles.button} onPress={handleSubmit(onSubmit)}>
+        <Text className={authStyles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
     </View>
   );
