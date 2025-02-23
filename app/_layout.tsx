@@ -1,6 +1,6 @@
 import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import "../global.css";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
