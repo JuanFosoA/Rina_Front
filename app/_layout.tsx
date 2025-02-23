@@ -1,8 +1,8 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import NetInfo from '@react-native-community/netinfo'
 
 import "../global.css";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeLayout = () => {
 

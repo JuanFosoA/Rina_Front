@@ -30,7 +30,7 @@ export default function LoginModule() {
         name="email"
         render={({ field: { onChange, value } }) => (
           <TextInput
-            className="border border-gray-300 p-2 rounded-md bg-white h-14 text-xl"
+            className="border border-gray-300 p-2 bg-white h-14 rounded-md text-xl"
             placeholder="Correo"
             onChangeText={onChange}
             value={value}
