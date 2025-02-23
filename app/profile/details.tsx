@@ -25,10 +25,9 @@ const Profile = () => {
   }, [])
 
   return (
-    <SafeAreaView className='bg-slate-600 h-full' style={{ flex:1}}>
-      <StatusBar barStyle="default" backgroundColor="white" />
+    <SafeAreaView className='bg-slate-600 h-full' style={{ flex:1}}> 
       <View>
-        
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Text>perfil</Text>
       </View>
     </SafeAreaView>
