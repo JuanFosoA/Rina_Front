@@ -6,6 +6,7 @@ import { ImageSlider } from '../../data/SliderData'
 import SearchFilter from '../../components/atoms/SearchFilter'
 import UserProfileButton from '../../components/atoms/UserProfileButton'
 import CategoriesFilter from '../../components/atoms/CategoriesFilter'
+import RecipeCard from '../../components/atoms/RecipeCard'
 
 type userIcon = {
         image: ImageSourcePropType;
@@ -22,10 +23,15 @@ const IndexMenu = ({image}: userIcon) => {
       </View>
       <CategoriesFilter/>
       
-      <View className='items-start mx-5 my-3'>
-        <Text className='text-3xl items-center '>Today's menu</Text>
+      <View className='items-start mx-5'>
+        <Text className='text-xl font-bold'>Today's menu</Text>
       </View>
       <Slider itemList={ImageSlider}/>
+
+      <View className='items-start mx-5'>
+        <Text className='text-xl font-bold'>Suggested dishes</Text>
+      </View>
+      <RecipeCard/>
     </View>
   )
 }

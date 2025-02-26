@@ -33,7 +33,7 @@ const SliderItem = ({ item, index, scrollX }: Props) => {
 
   return (
     <Animated.View className='bg-white rounded-xl shadow-lg shadow-black/60 justify-center items-center p-4 gap-2' style={[styles.itemContainer, rnAnimatedStyle]}>
-      <Image source={item.image} className='w-[270px] h-[180px] rounded-lg' />
+      <Image source={item.image} className='w-[210px] h-[120px] rounded-lg' />
       <Text className='text-lg font-bold text-center'>{item.title}</Text>
     </Animated.View>
   );
