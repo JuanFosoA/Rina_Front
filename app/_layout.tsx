@@ -5,15 +5,16 @@ import "../global.css";
 
 const HomeLayout = () => {
 
-  const [isConnected, setIsConnected] = useState(false)
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
   const [isAuthenticate, setIsAuthenticate] = useState(false)
 
   const verifyAuthenticate = async () => {
     try {
       const token = await AsyncStorage.getItem('@myToken')
-      if (token) setIsAuthenticate(true)
+      setIsAuthenticate(!!token);
     } catch (error) {
-      
+      console.error("Error verificando autenticación:", error);
+      setIsAuthenticate(false);
     }
   }
 
@@ -28,15 +29,17 @@ const HomeLayout = () => {
     verifyAuthenticate()
   }, [])
 
+  useEffect(() => {
+    if (isAuthenticate === false) {
+      router.replace('/auth');
+    }
+  }, [isAuthenticate]);
+  
   return (
-    isAuthenticate ? (
-      router.navigate('/auth')
-    ) : (
       <Stack>
           <Stack.Screen name="auth" options={{ headerShown: false}}/>
           <Stack.Screen name="(drawer)" options={{ headerShown: false}}/>
       </Stack>
-    )
   )
 }
 
