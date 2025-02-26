@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { loginSchema } from "../../validations/schemas";
 import { authStyles } from "../../components/tokens";
+import AsyncStorage from "@react-native-async-storage/async-storage"; 
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -17,8 +18,22 @@ export default function LoginModule() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    Alert.alert("Inicio de sesión exitoso", `Correo: ${data.email}`);
+  const onSubmit = async (data: LoginFormData) => {
+    //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
+    if (data.email === "test@example.com" && data.password === "123456") { 
+      const fakeToken = "fake-jwt-token-12345";
+
+      try {
+        await AsyncStorage.setItem("@myToken", fakeToken); 
+        const token = await AsyncStorage.getItem('@myToken')
+        console.log("Token almacenado:", token);
+      
+      } catch (error) {
+        console.error("Error guardando el token:", error); 
+      }
+    } else {
+      Alert.alert("Credenciales incorrectas");
+    }
   };
 
   return (

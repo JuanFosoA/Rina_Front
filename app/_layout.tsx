@@ -5,12 +5,14 @@ import "../global.css";
 
 const HomeLayout = () => {
 
-  const [isConnected, setIsConnected] = useState<boolean | null>(null);
+  const [isConnected, setIsConnected] = useState(false)
   const [isAuthenticate, setIsAuthenticate] = useState(false)
 
+  //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
   const verifyAuthenticate = async () => {
     try {
       const token = await AsyncStorage.getItem('@myToken')
+      console.log("Token almacenado:", token);
       setIsAuthenticate(!!token);
     } catch (error) {
       console.error("Error verificando autenticación:", error);
@@ -18,6 +20,7 @@ const HomeLayout = () => {
     }
   }
 
+  //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
   useEffect(() => {
     // const unsubscribe = NetInfo.addEventListener(state => {
     //   setIsConnected(state.isConnected as boolean)
@@ -26,12 +29,20 @@ const HomeLayout = () => {
     // return () => {
     //   unsubscribe();
     // }
+
+    //AsyncStorage.removeItem('@myToken'); 
+      
     verifyAuthenticate()
+    const checkTokenInterval = setInterval(verifyAuthenticate, 1000); 
+
+    return () => clearInterval(checkTokenInterval); 
   }, [])
 
   useEffect(() => {
     if (isAuthenticate === false) {
       router.replace('/auth');
+    } else {
+      router.replace('/');
     }
   }, [isAuthenticate]);
   
