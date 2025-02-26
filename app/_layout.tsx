@@ -30,7 +30,7 @@ const HomeLayout = () => {
 
   return (
     isAuthenticate ? (
-      router.navigate('/')
+      router.navigate('/auth')
     ) : (
       <Stack>
           <Stack.Screen name="auth" options={{ headerShown: false}}/>
