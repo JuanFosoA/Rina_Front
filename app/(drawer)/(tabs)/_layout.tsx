@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import "../../global.css";
+import "../../../global.css";
 import { Tabs } from 'expo-router';
 
 const TabLayout = () => {

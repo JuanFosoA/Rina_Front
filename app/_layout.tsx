@@ -2,7 +2,6 @@ import { router, Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import "../global.css";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeLayout = () => {
 
@@ -35,8 +34,7 @@ const HomeLayout = () => {
     ) : (
       <Stack>
           <Stack.Screen name="auth" options={{ headerShown: false}}/>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false}}/>
-          <Stack.Screen name="profile" options={{ headerShown: false}}/>
+          <Stack.Screen name="(drawer)" options={{ headerShown: false}}/>
       </Stack>
     )
   )

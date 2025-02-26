@@ -1,3 +1,5 @@
+
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,7 +16,11 @@ module.exports = {
         tertiary: '#EDF2F4',
         quaternary: '#EF233C',
         fith:'#D90429'
-      }
+      },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+        }
     },
   },
   plugins: [],

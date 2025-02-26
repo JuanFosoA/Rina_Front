@@ -1,16 +1,32 @@
-import { View, Text } from 'react-native'
+import { View, Text, ImageSourcePropType } from 'react-native'
 import React from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import Slider from '../../components/molecules/Slider'
+import { ImageSlider } from '../../data/SliderData'
+import SearchFilter from '../../components/atoms/SearchFilter'
+import UserProfileButton from '../../components/atoms/UserProfileButton'
+import CategoriesFilter from '../../components/atoms/CategoriesFilter'
 
-const IndexMenu = () => {
+type userIcon = {
+        image: ImageSourcePropType;
+    }
+
+const IndexMenu = ({image}: userIcon) => {
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1}}>
-        <View>
-          <Text>IndexMenu</Text>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View>
+      <UserProfileButton headerIcon={image} />
+      <SearchFilter icon='search' placeholder='enter your fav recipe'/>
+
+      <View className='items-start mx-5'>
+        <Text className='text-xl font-bold'>Categories</Text>
+      </View>
+      <CategoriesFilter/>
+      
+      <View className='items-start mx-5 my-3'>
+        <Text className='text-3xl items-center '>Today's menu</Text>
+      </View>
+      <Slider itemList={ImageSlider}/>
+    </View>
   )
 }
 
