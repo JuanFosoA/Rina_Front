@@ -1,11 +1,14 @@
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView } from 'react-native'
 import React from 'react'
+import ProfileMenu from '../../../modules/profile/ProfileMenu'
 
 const profile = () => {
   return (
-    <View>
-      <Text>profile</Text>
-    </View>
+    <SafeAreaView style={{flex:1}}>
+      <ScrollView>
+        <ProfileMenu />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

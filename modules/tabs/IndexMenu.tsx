@@ -19,11 +19,6 @@ const IndexMenu = ({image}: userIcon) => {
       <SearchFilter icon='search' placeholder='enter your fav recipe'/>
 
       <View className='items-start mx-5'>
-        <Text className='text-xl font-bold'>Categories</Text>
-      </View>
-      <CategoriesFilter/>
-      
-      <View className='items-start mx-5'>
         <Text className='text-xl font-bold'>Today's menu</Text>
       </View>
       <Slider itemList={ImageSlider}/>

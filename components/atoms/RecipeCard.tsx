@@ -3,8 +3,11 @@ import React from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 import { RecipeList } from '../../data/RecipesData'
+import {  useRouter } from 'expo-router';
 
 const RecipeCard = () => {
+    const router = useRouter();
+
   return (
     <View>
         <FlatList 
@@ -12,7 +15,7 @@ const RecipeCard = () => {
             keyExtractor={(item) => item.id} 
             renderItem={({ item }) => 
             <Pressable
-                onPress={() => alert("hi")} 
+                onPress={() => router.push(`/recipe/${item.id}`)} 
                 className='bg-white shadow-black shadow-lg rounded-2xl my-4 mx-5 items-center py-6 px-2' 
                 style={{shadowOpacity: 0.1, shadowRadius: 7}}>
                 <Image source={item.image} className='w-[150px] h-[150px] rounded-2xl' resizeMode='cover' />
