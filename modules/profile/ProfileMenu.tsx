@@ -1,6 +1,8 @@
 import { Image, View, Text } from 'react-native'
 import React from 'react'
 import CategoriesFilter from '../../components/atoms/CategoriesFilter'
+import Slider from '../../components/molecules/Slider'
+import { ImageSlider } from '../../data/SliderData'
 
 const ProfileMenu = () => {
   return (
@@ -18,6 +20,13 @@ const ProfileMenu = () => {
 
       <View className='h-20'>
         <CategoriesFilter />
+      </View>
+      <View className='h-60'>
+        <View className='items-start mx-5'>
+          <Text className='text-xl font-bold'>Favorite foods</Text>
+        </View>
+        <Slider itemList={ImageSlider}/>
+
       </View>
 
     </View>
