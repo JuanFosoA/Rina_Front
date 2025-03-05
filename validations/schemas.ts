@@ -4,7 +4,9 @@ export const loginSchema = z.object({
   email: z.string().email(),
 
   password: z
-    .string()
+    .string({
+      required_error: "Mensaje personalizado"
+    })
     .min(5, { message: "el campo debe tener minimo 5 caracteres" })
     .max(50, { message: "el campo debe tener minimo 50 caracteres" }),
 
