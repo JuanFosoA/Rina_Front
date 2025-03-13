@@ -1,4 +1,4 @@
-import { View, Text, StatusBar } from 'react-native'
+import { View, Text, StatusBar, ScrollView } from 'react-native'
 import { Link } from 'expo-router'
 import React from 'react'
 
@@ -10,9 +10,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const Index = () => {
   return (
     <SafeAreaView style={{flex:1}}>
-      <View>
+      <ScrollView>
         <IndexMenu image={require("../../../assets/cubano.webp")} />
-      </View>
+      </ScrollView>
     </SafeAreaView>
 
   )
