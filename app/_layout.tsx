@@ -5,14 +5,14 @@ import "../global.css";
 
 const HomeLayout = () => {
 
-  const [isConnected, setIsConnected] = useState(false)
+  //const [isConnected, setIsConnected] = useState(false)
   const [isAuthenticate, setIsAuthenticate] = useState(false)
 
   //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
   const verifyAuthenticate = async () => {
     try {
       const token = await AsyncStorage.getItem('@myToken')
-      console.log("Token almacenado:", token);
+      //console.log("Token almacenado:", token);
       setIsAuthenticate(!!token);
     } catch (error) {
       console.error("Error verificando autenticación:", error);
