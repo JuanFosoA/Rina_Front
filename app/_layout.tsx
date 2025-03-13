@@ -12,6 +12,8 @@ const HomeLayout = () => {
   const verifyAuthenticate = async () => {
     try {
       const token = await AsyncStorage.getItem('@myToken')
+
+      // console.log("Token almacenado:", token);
       //console.log("Token almacenado:", token);
       setIsAuthenticate(!!token);
     } catch (error) {

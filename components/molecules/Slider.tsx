@@ -22,7 +22,7 @@ const Slider = ({itemList} : Props) => {
   })
 
   return (
-    <View>
+    <View className='my-2'>
       <Animated.FlatList 
           data={itemList} 
           renderItem={({item, index}) => (
