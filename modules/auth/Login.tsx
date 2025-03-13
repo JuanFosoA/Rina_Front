@@ -40,7 +40,6 @@ export default function LoginModule() {
     <View className={authStyles.container}>
       <Text className={authStyles.title}>Iniciar Sesión</Text>
 
-      <Text className={authStyles.label}>Correo</Text>
       <Controller
         control={control}
         name="email"
@@ -56,7 +55,6 @@ export default function LoginModule() {
       />
       {errors.email && <Text className={authStyles.errorText}>{errors.email.message}</Text>}
 
-      <Text className={authStyles.label}>Contraseña</Text>
       <Controller
         control={control}
         name="password"

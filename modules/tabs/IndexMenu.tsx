@@ -1,6 +1,5 @@
 import { View, Text, ImageSourcePropType } from 'react-native'
 import React from 'react'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import Slider from '../../components/molecules/Slider'
 import { ImageSlider } from '../../data/SliderData'
 import SearchFilter from '../../components/atoms/SearchFilter'
