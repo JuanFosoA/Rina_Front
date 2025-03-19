@@ -1,7 +1,9 @@
+// context/AuthContext.tsx
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { validateToken } from '../server/auth.server';
 
-export interface AuthContextType {
+interface AuthContextType {
   user: any;
   setUser: (user: any) => void;
   logout: () => void;
@@ -24,9 +26,17 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = await AsyncStorage.getItem('@auth_token');
+        const token = await AsyncStorage.getItem('@myToken');
+
         if (token) {
-          setUser({ token });
+          const isValid = await validateToken(token);
+
+          if (isValid) {
+            setUser({ token });
+          } else {
+            await AsyncStorage.removeItem('@myToken');
+            setUser(null);
+          }
         } else {
           setUser(null);
         }
@@ -42,7 +52,7 @@ export const AuthProvider = ({ children }: Props) => {
   }, []);
 
   const logout = async () => {
-    await AsyncStorage.removeItem('@auth_token');
+    await AsyncStorage.removeItem('@myToken');
     setUser(null);
   };
 
