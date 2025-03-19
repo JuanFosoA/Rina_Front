@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { registerSchema } from "../../validations/schemas";
 import { authStyles } from "../../components/tokens";
+import { register } from "../../server/auth.server";
+import { useRouter } from 'expo-router';
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -16,15 +18,19 @@ export default function RegisterModule() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
-
-  const onSubmit = (data: RegisterFormData) => {
-    Alert.alert("Registro Exitoso 🎉", `Nombre: ${data.name}\nUsuario: ${data.user}\nEmail: ${data.email}`);
+  const router = useRouter();
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      await register(data.name, data.user, data.email, data.password);
+      router.replace('/auth/login');
+    } catch (error) {
+      Alert.alert("Error", error instanceof Error ? error.message : "Error desconocido");
+    }
   };
 
   return (
     <View className={authStyles.container}>
       <Text className={authStyles.title}>Registro</Text>
-
       <Controller
         control={control}
         name="name"
@@ -33,7 +39,7 @@ export default function RegisterModule() {
         )}
       />
       {errors.name && <Text className={authStyles.errorText}>{errors.name.message}</Text>}
-
+      
       <Controller
         control={control}
         name="email"
@@ -60,6 +66,7 @@ export default function RegisterModule() {
         )}
       />
       {errors.password && <Text className={authStyles.errorText}>{errors.password.message}</Text>}
+
 
       <TouchableOpacity className={authStyles.button} onPress={handleSubmit(onSubmit)}>
         <Text className={authStyles.buttonText}>Registrarse</Text>

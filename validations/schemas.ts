@@ -3,13 +3,13 @@ import { z } from "zod";
 export const loginSchema = z.object({
   email: z
     .string()
-    .nonempty({ message: "El email no puede estar vacío" })
-    .email({ message: "Debe ser un correo válido" }),
+    .nonempty({ message: "El email no puede estar vacío" }),
+    //.email({ message: "Debe ser un correo válido" }),
 
   password: z
     .string()
     .nonempty({ message: "La contraseña no puede estar vacía" })
-    .min(5, { message: "El campo debe tener mínimo 5 caracteres" })
+    .min(3, { message: "El campo debe tener mínimo 5 caracteres" })
     .max(50, { message: "El campo debe tener máximo 50 caracteres" }),
 
   remember: z.boolean().optional(),

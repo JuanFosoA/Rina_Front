@@ -1,18 +1,21 @@
+import Drawer from 'expo-router/drawer';
+import React from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import CustomDrawerContent from './CustomDrawerContent';
 
-import Drawer from 'expo-router/drawer'
-import React from 'react'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import CustomDrawerContent  from '../../components/atoms/CustomDrawerContent';
-const DrawerLayoot = () => {
+const DrawerLayout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer drawerContent={(props) => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen name="(tabs)" options={{ title: "Inicio", headerShown: false }} />
-        <Drawer.Screen name="profile" options={{ title: "Perfil", headerShown: false }} />
-        <Drawer.Screen name="recipe" options={{ title: "Recipe", headerShown: false }} />
+      <Drawer
+        screenOptions={{ headerShown: false }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen name="(tabs)" options={{ title: "Inicio" }} />
+        <Drawer.Screen name="profile" options={{ title: "Perfil" }} />
+        <Drawer.Screen name="recipe" options={{ title: "Receta" }} />
       </Drawer>
     </GestureHandlerRootView>
-  )
-}
+  );
+};
 
-export default DrawerLayoot
+export default DrawerLayout;
