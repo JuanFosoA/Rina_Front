@@ -9,7 +9,11 @@ const DrawerLayoot = () => {
       <Drawer>
         <Drawer.Screen name="(tabs)" options={{ title: "Inicio", headerShown: false }} />
         <Drawer.Screen name="profile" options={{ title: "Perfil", headerShown: false }} />
-        <Drawer.Screen name="recipe" options={{ title: "Recipe", headerShown: false }} />
+        <Drawer.Screen 
+          name="recipe" 
+          options={{ title: "Recipe", 
+                    headerShown: false, 
+                    drawerItemStyle: { display: 'none' } }} />
       </Drawer>
     </GestureHandlerRootView>
   )
