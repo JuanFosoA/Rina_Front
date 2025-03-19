@@ -1,57 +1,45 @@
-import { router, Stack } from 'expo-router';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import "../global.css";
+import { router, Stack, useRouter } from 'expo-router';
+import { AuthProvider } from '../context/AuthContext';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { validateToken } from '../server/auth.server';
 
-const HomeLayout = () => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useContext(AuthContext);
+  const router = useRouter();
 
-  const [isConnected, setIsConnected] = useState(false)
-  const [isAuthenticate, setIsAuthenticate] = useState(false)
-
-  //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
-  const verifyAuthenticate = async () => {
-    try {
-      const token = await AsyncStorage.getItem('@myToken')
-      // console.log("Token almacenado:", token);
-      setIsAuthenticate(!!token);
-    } catch (error) {
-      console.error("Error verificando autenticación:", error);
-      setIsAuthenticate(false);
-    }
-  }
-
-  //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
-  useEffect(() => {
-    // const unsubscribe = NetInfo.addEventListener(state => {
-    //   setIsConnected(state.isConnected as boolean)
-    // })
-
-    // return () => {
-    //   unsubscribe();
-    // }
-
-    //AsyncStorage.removeItem('@myToken'); 
-      
-    verifyAuthenticate()
-    const checkTokenInterval = setInterval(verifyAuthenticate, 1000); 
-
-    return () => clearInterval(checkTokenInterval); 
-  }, [])
-
-  useEffect(() => {
-    if (isAuthenticate === false) {
-      router.replace('/auth');
-    } else {
-      router.replace('/');
-    }
-  }, [isAuthenticate]);
   
-  return (
-      <Stack>
-          <Stack.Screen name="auth" options={{ headerShown: false}}/>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false}}/>
-      </Stack>
-  )
-}
 
-export default HomeLayout
+  useEffect(() => {
+    validateTokenLayout()
+    if (!user) {
+      router.replace('/auth');
+    }
+  }, [router, user]);
+
+  return user ? children : null;
+};
+  const validateTokenLayout = async () => {
+      const infoUser = await AsyncStorage.getItem('@auth_token')
+      const infoUserObj = JSON.parse(infoUser || '{}')
+      const validacion = validateToken(infoUser)
+      if (infoUser && Object.entries(infoUserObj).length && await validacion) {
+        router.replace('/')
+      }
+    }
+    
+const HomeLayout = () => {
+  return (
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <ProtectedRoute>
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+        </ProtectedRoute>
+      </Stack>
+    </AuthProvider>
+  );
+};
+
+export default HomeLayout;

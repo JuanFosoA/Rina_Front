@@ -6,6 +6,7 @@ import { authStyles } from '../../components/tokens'
 const Auth = () => {
   return (
     <View className={authStyles.container}>
+      <Text className='text-fith text-7xl p-6'>Bienvenido</Text>
       <Link href='/auth/login' className={authStyles.button}>
         <Text className={authStyles.buttonText}>
             login

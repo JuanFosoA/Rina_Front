@@ -1,6 +1,5 @@
-import { FlatList, Image, View, Text, Dimensions } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import React from 'react'
-import { Link } from 'expo-router'
 import {ImageSliderType } from '../../data/SliderData'
 import SliderItem from '../atoms/SliderItem'
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'

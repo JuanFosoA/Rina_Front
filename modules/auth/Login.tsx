@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { loginSchema } from "../../validations/schemas";
 import { authStyles } from "../../components/tokens";
-import AsyncStorage from "@react-native-async-storage/async-storage"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { login } from "../../server/auth.server";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -19,20 +20,16 @@ export default function LoginModule() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    //AQUI HICE AJUSTES PA HACER LA SIMULACIÓN
-    if (data.email === "test@example.com" && data.password === "123456") { 
-      const fakeToken = "fake-jwt-token-12345";
-
-      try {
-        await AsyncStorage.setItem("@myToken", fakeToken); 
-        const token = await AsyncStorage.getItem('@myToken')
-        console.log("Token almacenado:", token);
-      
-      } catch (error) {
-        console.error("Error guardando el token:", error); 
+    try {
+      const response = await login(data.email, data.password);
+      const token = response.token;
+      if (typeof token === "string") {
+        await AsyncStorage.setItem("@myToken", token);
+      } else {
+        throw new Error("Token inválido o no recibido");
       }
-    } else {
-      Alert.alert("Credenciales incorrectas");
+    } catch (error) {
+      Alert.alert("Error", error instanceof Error ? error.message : "Error desconocido");
     }
   };
 
@@ -40,14 +37,13 @@ export default function LoginModule() {
     <View className={authStyles.container}>
       <Text className={authStyles.title}>Iniciar Sesión</Text>
 
-      <Text className={authStyles.label}>Correo</Text>
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange, value } }) => (
           <TextInput
             className={authStyles.input}
-            placeholder="Correo"
+            placeholder="username"
             onChangeText={onChange}
             value={value}
             keyboardType="email-address"
@@ -56,7 +52,6 @@ export default function LoginModule() {
       />
       {errors.email && <Text className={authStyles.errorText}>{errors.email.message}</Text>}
 
-      <Text className={authStyles.label}>Contraseña</Text>
       <Controller
         control={control}
         name="password"

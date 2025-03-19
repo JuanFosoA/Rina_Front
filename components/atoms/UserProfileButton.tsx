@@ -1,8 +1,6 @@
 import { Image, Pressable, ImageSourcePropType } from 'react-native'
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React from 'react'
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useRouter } from "expo-router";
 
 type Props = {
   headerIcon: ImageSourcePropType;
