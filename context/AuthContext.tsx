@@ -1,66 +1,78 @@
-// context/AuthContext.tsx
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { validateToken } from '../server/auth.server';
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { validateToken } from "../server/auth.server";
+import { ActivityIndicator, View } from "react-native";
 
+// Añadí isLoading, isLoggingIn y la opción de isAuthenticated como null para
+// mejorar la experiencia del usuario entre validacion del login y la verificación de si hay o no
+// un token almacenado, por eso gestionamos ahora isAuthenticated como null.
 interface AuthContextType {
-  user: any;
-  setUser: (user: any) => void;
+  isAuthenticated: boolean | null;
+  isLoading: boolean;
+  isLoggingIn: boolean;
+  login_AuthContext: () => void;
   logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  setUser: () => {},
-  logout: () => {},
-});
-
-interface Props {
-  children: ReactNode;
-}
-
-export const AuthProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
+const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+  const router = useRouter();
+  
+  // Los problemas al renderizar se solucionaron simplemente usando useEffect ya que no forzamos
+  // el cambio de ruta o la carga de una ruta antes o durante la carga de otra con mayor prioridad
+  // o en cola
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = await AsyncStorage.getItem('@myToken');
-
-        if (token) {
-          const isValid = await validateToken(token);
-
-          if (isValid) {
-            setUser({ token });
-          } else {
-            await AsyncStorage.removeItem('@myToken');
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Error checking auth token:', error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
+    const checkAuthStatus = async () => {
+      const token = await AsyncStorage.getItem("@myToken");
+      setIsAuthenticated(!!token); 
+      setIsLoading(false);
     };
-
-    checkAuth();
+    checkAuthStatus();
   }, []);
 
-  const logout = async () => {
-    await AsyncStorage.removeItem('@myToken');
-    setUser(null);
+  const login_AuthContext = async () => {
+    setIsLoggingIn(true);
+    const token = await AsyncStorage.getItem('@myToken');
+    const isValid = await validateToken(token);
+    if(isValid){
+      setIsAuthenticated(true);
+      router.replace('/')
+    }
+    setIsLoggingIn(false)
   };
 
-  if (loading) return null;
+  const logout = async () => {
+    await AsyncStorage.removeItem('@myToken')
+    setIsAuthenticated(false);
+    router.replace("/auth");
+    setIsLoading(false);
+  };
+
+  // usé ActivityIndicator provicionalmente (nunca lo vamos a cambiar XD)
+  // para que el usuario reciba feedback mientras todo se verifica
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
+    );
+  }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, isLoggingIn, login_AuthContext, logout }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };

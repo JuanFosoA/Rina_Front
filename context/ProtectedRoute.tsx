@@ -5,8 +5,9 @@ import { AuthContext } from '../context/AuthContext';
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user } = useContext(AuthContext);
-
-  useEffect(() => {
+  console.log('hola', user);
+  
+  useEffect(() => { 
     if (!user) {
       router.replace('/auth');
     }

@@ -10,6 +10,8 @@ export const login = async (email: string, password: string) => {
         password: password 
         }),
     });
+
+    
     const token = await response.headers.get("Authorization");
     const data = await response.json();
     if (!response.ok)
@@ -36,10 +38,10 @@ export const register = async (
         username: user,
         email: email,
         password: password,
-        roles : []
+        roles: []
       }),
-    });
-
+    }); 
+    
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "Error al registrarse");
 

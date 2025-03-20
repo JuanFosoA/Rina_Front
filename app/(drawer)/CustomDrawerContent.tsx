@@ -1,10 +1,9 @@
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { useRouter } from 'expo-router';
-import { useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function CustomDrawerContent(props: any) {
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {

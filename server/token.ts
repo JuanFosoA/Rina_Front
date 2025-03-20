@@ -1,4 +1,4 @@
-const apiFast = "https://violin-hate-distinguished-rv.trycloudflare.com/";
+const apiFast = "https://aruba-contains-context-swimming.trycloudflare.com/";
 
 export const authToken = {
   login: apiFast + "api/auth/signin",

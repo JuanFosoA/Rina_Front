@@ -3,13 +3,12 @@ import { AuthProvider } from '../context/AuthContext';
 import { ProtectedRoute } from '../context/ProtectedRoute';
 
 const HomeLayout = () => {
+  
   return (
     <AuthProvider>
       <Stack>
         <Stack.Screen name="auth" options={{ headerShown: false }} />
-        <ProtectedRoute>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        </ProtectedRoute>
+        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );
