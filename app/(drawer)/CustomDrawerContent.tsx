@@ -1,19 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 export default function CustomDrawerContent(props: any) {
+  const { logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
-    try {
-      await AsyncStorage.clear();
-      console.log("Token borrado");
-      router.replace('/auth');
-    } catch (error) {
-      console.error("Error borrando el token:", error);
-    }
+    await logout();
+    router.replace('/auth');
   };
 
   return (
