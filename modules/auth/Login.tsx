@@ -27,7 +27,7 @@ export default function LoginModule() {
       const token = response.token;
       if (typeof token === "string") {
         await AsyncStorage.setItem("@myToken", token);
-        await login_AuthContext();
+        await login_AuthContext(token);
       } else {
         throw new Error("Token inválido o no recibido");
       }
