@@ -21,7 +21,9 @@
         "foregroundImage": "./assets/rina.jpg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.juanfosoa.rina"
+      "package": "com.juanfosoa.rina",
+
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
