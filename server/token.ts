@@ -1,4 +1,4 @@
-const apiFast = "https://triangle-jokes-impacts-welcome.trycloudflare.com/";
+const apiFast = "https://zzzbuilds-server.lat/";
 
 export const authToken = {
   login: apiFast + "api/auth/signin",

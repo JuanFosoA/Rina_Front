@@ -17,6 +17,9 @@ const HomeLayout = () => {
   })
 
   return (
+    // RESCATAR TOKEN - NO CAMBIA GUARDEMOSLO
+    // HACER REVISION DE SUBSCRIPTION 
+    // BUSCAR EL SDK PARA EXPO NOTIFICATIONS
     <AuthProvider>
       <Stack>
         <Stack.Screen name="auth" options={{ headerShown: false }} />
