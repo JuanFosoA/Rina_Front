@@ -1,5 +1,4 @@
-// const apiFast = "https://zzzbuilds-server.lat/";
-export const apiFast ="https://engineering-protecting-attend-signature.trycloudflare.com/";
+export const apiFast = "https://zzzbuilds-server.lat/";
 
 export const authToken = {
   login: apiFast + "api/auth/signin",

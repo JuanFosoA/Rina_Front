@@ -1,4 +1,4 @@
-import { apiFast, menuData } from "./token";
+import {  apiFast, menuData } from "./token";
 
 export const getMenu = async (token: string | null): Promise<any> => {
   try {
