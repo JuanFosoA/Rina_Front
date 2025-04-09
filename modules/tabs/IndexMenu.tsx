@@ -4,7 +4,6 @@ import Slider from '../../components/molecules/Slider'
 import { ImageSlider } from '../../data/SliderData'
 import SearchFilter from '../../components/atoms/SearchFilter'
 import UserProfileButton from '../../components/atoms/UserProfileButton'
-import CategoriesFilter from '../../components/atoms/CategoriesFilter'
 import RecipeCard from '../../components/atoms/RecipeCard'
 
 type userIcon = {

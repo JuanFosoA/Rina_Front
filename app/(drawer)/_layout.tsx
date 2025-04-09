@@ -1,7 +1,7 @@
 import Drawer from 'expo-router/drawer';
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import CustomDrawerContent from './CustomDrawerContent';
+import CustomDrawerContent from '../../components/organism/CustomDrawerContent';
 import { router, useRootNavigationState } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { ActivityIndicator, View } from 'react-native';

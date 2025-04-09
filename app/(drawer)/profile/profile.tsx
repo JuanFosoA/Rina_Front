@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native'
+import { SafeAreaView, ScrollView } from 'react-native'
 import React from 'react'
 import ProfileMenu from '../../../modules/profile/ProfileMenu'
 

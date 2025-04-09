@@ -4,7 +4,6 @@ export const loginSchema = z.object({
   email: z
     .string()
     .nonempty({ message: "El email no puede estar vacío" }),
-    //.email({ message: "Debe ser un correo válido" }),
 
   password: z
     .string()

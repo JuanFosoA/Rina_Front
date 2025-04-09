@@ -11,9 +11,6 @@ const Profile = () => {
     const bodyToSend = {
       "idMeal": idMeal
     }
-
-    type inter = {name: string, phone: number}
-
     fetch('', {
       method: "POST",
       body: JSON.stringify(bodyToSend)
@@ -22,7 +19,7 @@ const Profile = () => {
       console.log()
     })
 
-  }, [])
+  }, [idMeal])
 
   return (
     <SafeAreaView className='bg-slate-600 h-full' style={{ flex:1}}> 
