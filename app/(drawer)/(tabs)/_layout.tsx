@@ -20,8 +20,9 @@ const TabLayout = () => {
                     headerShown: false}}
         />
         <Tabs.Screen
-          name="saved" 
-          options={{title: 'My menus',
+          name="menus" 
+          options={{title: 'menus',
+                    tabBarIcon: ({ color }) => <FontAwesome size={24} name="list" color={color} />,
                     headerShown: false}}
         />
   

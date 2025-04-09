@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Pressable, ScrollView, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import { ScrollView, SafeAreaView } from 'react-native'
+import React from 'react'
 import SearchMenu from '../../../modules/tabs/SearchMenu'
 
 const Search = () => {

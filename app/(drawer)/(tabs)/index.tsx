@@ -1,5 +1,4 @@
-import { View, Text, StatusBar, ScrollView } from 'react-native'
-import { Link } from 'expo-router'
+import { ScrollView } from 'react-native'
 import React from 'react'
 
 import IndexMenu from '../../../modules/tabs/IndexMenu'

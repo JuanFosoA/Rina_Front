@@ -1,103 +1,120 @@
-import { View, Text, Image, ActivityIndicator, StyleSheet } from "react-native";
-import React, { useState, useEffect } from "react";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useAuth } from "../../context/AuthContext";
-import { Receta } from "../../server/recetas.server";
-import { getRecetaById } from "../../server/recetas.server";
-import { apiFast } from "../../server/token";
+import { fetchRecipeById } from "../../server/recipe.server";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const RecipeDetail = () => {
-  const { id } = useLocalSearchParams();
-  const { userToken } = useAuth();
-  const [receta, setReceta] = useState<Receta | null>(null);
-  const [loading, setLoading] = useState(true);
+interface NutritionalInfo {
+  calorias: number;
+  carbohidratos: string;
+  grasas: string;
+  proteinas: string;
+}
+
+interface Ingredient {
+  cantidad: any;
+  nombre: string;
+}
+
+interface Instruction {
+  orden: number;
+  paso: string;
+}
+
+interface Recipe {
+  id: string;
+  nombre: string;
+  categoria: string[];
+  imagenNombre: string | null;
+  informacionNutricional: NutritionalInfo;
+  ingredientes: Ingredient[];
+  instrucciones: Instruction[];
+  porciones: number;
+  tiempoPreparacion: number;
+}
+
+const RecipeDetail: React.FC = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { userToken } = useAuth();
 
   useEffect(() => {
-    
-    const fetchReceta = async () => {
+    const getRecipe = async () => {
       try {
-        if (!userToken) throw new Error('No autenticado');
-        
-        setLoading(true);
-        const response = await getRecetaById(id as string, userToken);
-        
-        if (response.error) throw new Error(response.error);
-        if (!response.data) throw new Error('Receta no encontrada');
-        
-        setReceta(response.data);
-        
+        const data = await fetchRecipeById(id, userToken);
+        setRecipe(data as unknown as Recipe);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error desconocido');
+        setError((err as Error).message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchReceta();
+    getRecipe();
   }, [id, userToken]);
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#ff7514" />
+      <View className="flex-1 justify-center items-center bg-red-400">
+        <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }
 
-  if (error) {
+  if (error || !recipe) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.errorText}>Error: {error}</Text>
-      </View>
-    );
-  }
-
-  if (!receta) {
-    return (
-      <View style={styles.container}>
-        <Text>Receta no encontrada</Text>
+      <View className="flex-1 justify-center items-center bg-red-400">
+        <Text className="text-white text-xl">{error || "Receta no encontrada"}</Text>
       </View>
     );
   }
 
   return (
-    <View className="bg-red-400 h-full">
-      <View className="bg-white flex-1 rounded-tr-[56px] rounded-tl-[56px] mt-60 items-center">
-        <View className="bg-red-600 h-[300px] w-[300px] absolute -top-[150px] rounded-2xl">
-          {receta.imagenNombre ? (<Image
-            source={{ uri: `${apiFast}uploads/${receta.imagenNombre}` }}
-            className="w-full h-full rounded-2xl"
-            resizeMode="cover"
-          />): (
+    <ScrollView className="bg-red-400 h-full">
+      <View className="bg-white flex-1 rounded-tr-[56px] rounded-tl-[56px] mt-60 items-center p-4">
+        <View className="bg-red-600 h-[300px] w-[300px] rounded-2xl">
+          {recipe.imagenNombre ? (
+            <Image
+              source={{ uri: recipe.imagenNombre }}
+              className="w-full h-full rounded-2xl"
+              resizeMode="cover"
+            />
+          ) : (
             <View className="flex-1 justify-center items-center">
-                <FontAwesome name="cutlery" size={32} color="#ccc" />
-                <Text className="text-gray-400 mt-2">Sin imagen</Text>
+              <FontAwesome name="cutlery" size={32} color="#ccc" />
+              <Text className="text-gray-400 mt-2">Sin imagen</Text>
             </View>
-        )}
+          )}
         </View>
-        <View className="mt-52 justify-center items-center">
-          <Text className="text-2xl font-bold mb-4">{receta.nombre}</Text>
-          <Text>Porciones: {receta.porciones}</Text>
-          <Text>Tiempo: {receta.tiempoPreparacion}</Text>
-          <Text>Ingredientes: {receta.tiempoPreparacion}</Text>
+
+        <View className="mt-4 justify-center items-center">
+          <Text className="text-2xl font-bold mb-2">{recipe.nombre}</Text>
+          <Text>Categoría: {recipe.categoria.join(", ")}</Text>
+          <Text>Tiempo de preparación: {recipe.tiempoPreparacion} minutos</Text>
+          <Text>Porciones: {recipe.porciones}</Text>
+
+          <Text className="font-bold mt-4">Información Nutricional:</Text>
+          <Text>Calorías: {recipe.informacionNutricional.calorias}</Text>
+          <Text>Carbohidratos: {recipe.informacionNutricional.carbohidratos}</Text>
+          <Text>Grasas: {recipe.informacionNutricional.grasas}</Text>
+          <Text>Proteínas: {recipe.informacionNutricional.proteinas}</Text>
+
+          <Text className="font-bold mt-4">Ingredientes:</Text>
+          {recipe.ingredientes.map((ing, index) => (
+            <Text key={index}>- {ing.nombre}</Text>
+          ))}
+
+          <Text className="font-bold mt-4">Instrucciones:</Text>
+          {recipe.instrucciones.map((step) => (
+            <Text key={step.orden}>{step.orden}. {step.paso}</Text>
+          ))}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 16,
-  },
-});
 
 export default RecipeDetail;
