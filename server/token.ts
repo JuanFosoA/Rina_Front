@@ -1,5 +1,5 @@
-const apiFast = "https://zzzbuilds-server.lat/";
-
+export const apiFast = "https://destinations-negative-futures-serial.trycloudflare.com/";
+//"https://zzzbuilds-server.lat/"
 export const authToken = {
   login: apiFast + "api/auth/signin",
   register: apiFast + "api/auth/signup",
