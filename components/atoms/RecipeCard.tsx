@@ -39,6 +39,7 @@ const RecipeCard = () => {
                             : null
                     }));
                     setRecetas(recetasConImagen);
+                    
                 } else {
                     throw new Error('No se recibieron datos de recetas');
                 }

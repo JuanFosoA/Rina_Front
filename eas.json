@@ -10,11 +10,16 @@
     },
     "preview": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "config": "preview",
+        "gradleCommand": ":app:assembleDebug"
       }
     },
     "production": {
-      "autoIncrement": true
+      "android": {
+        "autoIncrement": true,
+        "config": "production"
+      }
     }
   },
   "submit": {
