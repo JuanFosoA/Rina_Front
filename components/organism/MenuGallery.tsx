@@ -1,63 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, View, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
+import React from 'react';
 import MenuCard from '../molecules/MenuCard';
-import { getMenu } from '../../server/menu.server';
-import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
+import { useFetchMenu } from '../../hooks/useFetchMenu';
+import MenuLoadingIndicator from '../atoms/MenuLoadingIndicator';
+import MenuErrorMessage from '../atoms/MenuErrorMessage';
 
-export default function Gallery() {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { userToken } = useAuth();
+export default function MenuGallery() {
+  const { data, loading, error } = useFetchMenu();
   const router = useRouter();
 
-const handlePress = (id: string) => {
-  router.push(`(menu)/${id}`);
-};
-
-  useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const res = await getMenu(userToken);
-      if (res.error) {
-        setError(res.error);
-        return;
-      }
-
-      const menuArray = Object.entries(res.data).map(([dia, comidas]) => ({
-        id: dia,
-        dia,
-        ...(typeof comidas === 'object' && comidas !== null ? comidas : {}),
-      }));
-
-      setData(menuArray);
-    } catch (err) {
-      console.error('Error al obtener menú:', err);
-      setError("Hubo un problema al obtener el menú.");
-    } finally {
-      setLoading(false);
-    }
+  const handlePress = (id: string) => {
+    router.push(`(menu)/${id}`);
   };
-  fetchData();
-}, [userToken]);
 
-
-  if (loading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#007bff" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.centered}>
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
-  }
+  if (loading) return <MenuLoadingIndicator />;
+  if (error) return <MenuErrorMessage error={error} />;
 
   return (
     <View style={styles.container}>
@@ -70,8 +28,7 @@ const handlePress = (id: string) => {
         )}
         contentContainerStyle={{ paddingBottom: 16 }}
         style={{ flex: 1 }}
-/>
-
+      />
     </View>
   );
 }
@@ -79,15 +36,5 @@ const handlePress = (id: string) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
   },
 });

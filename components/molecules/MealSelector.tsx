@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, Modal, FlatList, View } from 'react-native';
+import { Modal, FlatList, View, Text } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { getRecetas } from '../../server/recetas.server';
+import MealButton from '../atoms/MealButton';
+import PrimaryButton from '../atoms/PrimaryButton';
 
 type MealSelectorProps = {
   day: string;
@@ -20,17 +22,16 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const { userToken } = useAuth();
+
   useEffect(() => {
     const fetchRecipes = async () => {
       if (!modalVisible) return;
 
       setLoading(true);
-
       try {
         const response = await getRecetas(userToken);
-
         if (response.data) {
-          const recipeList = response.data.map((receta: { id: any; nombre: any; }) => ({
+          const recipeList = response.data.map((receta: { id: string; nombre: string; }) => ({
             id: receta.id,
             name: receta.nombre,
           }));
@@ -55,30 +56,25 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
     setModalVisible(false);
   };
 
+  const selectedName = recipes.find(r => r.id === selectedRecipeId)?.name || '';
+
   return (
     <>
-      <TouchableOpacity
-        className={`bg-secondary rounded-full p-4 my-2 ${selectedRecipeId ? 'bg-green-500' : ''}`}
-        style={{ width: 120, height: 120, justifyContent: 'center', alignItems: 'center' }} 
+      <MealButton
+        label={selectedRecipeId ? selectedName : 'Seleccionar receta'}
+        selected={!!selectedRecipeId}
         onPress={() => setModalVisible(true)}
-      >
-        <Text className="text-white">
-          {selectedRecipeId 
-            ? recipes.find(r => r.id === selectedRecipeId)?.name ?? 'Receta seleccionada' 
-            : 'Seleccionar receta'}
-        </Text>
-
-      </TouchableOpacity>
+      />
 
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View className="flex-1 justify-center items-center bg-gray-500 bg-opacity-100">
+        <View className="flex-1 justify-center items-center bg-gray-500 bg-opacity-80">
           <View className="bg-white p-4 rounded-lg w-3/4">
-            <Text className="text-lg font-bold mb-4">Selecciona una receta para {mealType}</Text>
+            <Text className="text-lg font-bold mb-4 capitalize">Selecciona una receta para {mealType}</Text>
 
             {loading ? (
               <Text>Cargando recetas...</Text>
@@ -87,22 +83,20 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
                 data={recipes}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                  <TouchableOpacity 
-                    className="p-3 border-b border-gray-200"
+                  <PrimaryButton
+                    title={item.name}
                     onPress={() => handleSelect(item.id)}
-                  >
-                    <Text>{item.name}</Text>
-                  </TouchableOpacity>
+                    style={{ marginVertical: 4 }}
+                  />
                 )}
               />
             )}
 
-            <TouchableOpacity 
-              className="mt-4 p-3 bg-gray-200 rounded"
+            <PrimaryButton
+              title="Cancelar"
               onPress={() => setModalVisible(false)}
-            >
-              <Text className="text-center">Cancelar</Text>
-            </TouchableOpacity>
+              style={{ marginTop: 10, backgroundColor: '#ccc' }}
+            />
           </View>
         </View>
       </Modal>

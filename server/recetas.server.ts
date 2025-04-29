@@ -18,14 +18,15 @@ export interface Ingrediente {
 }
 
 export interface Instruccion {
+  paso: string;
+  orden: number;
+}
+
+export interface InformacionNutricional {
   calorias: number;
   proteinas: string;
   carbohidratos: string;
   grasas: string;
-}
-export interface InformacionNutricional {
-  paso: string;
-  orden: number;
 }
 
 export interface Cantidad {
@@ -39,62 +40,69 @@ interface ApiResponse<T> {
   error?: string;
 }
 
+const unauthorizedResponse = <T>(): ApiResponse<T> => ({
+  status: 401,
+  error: "No estás autenticado",
+});
+
+const serverErrorResponse = <T>(error: unknown): ApiResponse<T> => ({
+  status: 500,
+  error: error instanceof Error ? error.message : "Error de conexión",
+});
+
+const safeFetch = async (input: RequestInfo, init?: RequestInit) => {
+  try {
+    const response = await fetch(input, init);
+    const text = await response.text();
+
+    if (!text.trim()) {
+      return { ok: false, response, error: "Respuesta vacía del servidor" };
+    }
+
+    try {
+      const data = JSON.parse(text);
+      return { ok: response.ok, response, data, error: null };
+    } catch (parseError) {
+      console.error("Error parseando JSON:", parseError);
+      return { ok: false, response, error: "Formato de respuesta inválido" };
+    }
+  } catch (error) {
+    console.error("Error en safeFetch:", error);
+    return {
+      ok: false,
+      response: null,
+      error: error instanceof Error ? error.message : "Error de conexión",
+    };
+  }
+};
+
 export const getRecetas = async (
   token: string | null
 ): Promise<ApiResponse<Receta[]>> => {
-  if (!token) {
-    return {
-      status: 401,
-      error: 'No estás autenticado'
-    };
-  }
+  if (!token) return unauthorizedResponse();
 
-  try {
-    const response = await fetch(recetasData.getRecetas, {
+  const { ok, response, data, error } = await safeFetch(
+    recetasData.getRecetas,
+    {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    });
-
-    const responseText = await response.text();
-    if (!responseText) {
-      return {
-        status: response.status,
-        error: "La respuesta del servidor está vacía",
-      };
     }
+  );
 
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error("Error parseando JSON:", parseError);
-      return {
-        status: response.status,
-        error: "Formato de respuesta inválido",
-      };
-    }
-
-    if (!response.ok) {
-      return {
-        status: response.status,
-        error: data.message || `Error ${response.status}: ${response.statusText}`,
-      };
-    }
-
+  if (!ok) {
     return {
-      status: response.status,
-      data: Array.isArray(data) ? data : [], 
-    };
-  } catch (error) {
-    console.error("Error en getRecetas:", error);
-    return {
-      status: 500,
-      error: error instanceof Error ? error.message : "Error de conexión",
+      status: response?.status || 500,
+      error: error || "Error desconocido",
     };
   }
+
+  return {
+    status: response!.status,
+    data: Array.isArray(data) ? data : [],
+  };
 };
 
 export const crearRecetaConImagen = async (
@@ -102,16 +110,9 @@ export const crearRecetaConImagen = async (
   imagenUri: string | null,
   token: string | null
 ): Promise<ApiResponse<Receta>> => {
-
-  if (!token) {
-    return {
-      status: 401,
-      error: 'No estás autenticado'
-    };
-  }
+  if (!token) return unauthorizedResponse();
 
   const formData = new FormData();
-
   formData.append("receta", {
     string: JSON.stringify(recetaData),
     type: "application/json",
@@ -119,14 +120,14 @@ export const crearRecetaConImagen = async (
   } as any);
 
   if (imagenUri) {
-    let filename = imagenUri.split('/').pop();
-    let match = /\.(\w+)$/.exec(filename || '');
-    let type = match ? `image/${match[1]}` : 'image/jpeg';
+    const filename = imagenUri.split("/").pop() || "imagen.jpg";
+    const extension = /\.(\w+)$/.exec(filename)?.[1] || "jpeg";
+    const type = `image/${extension}`;
 
-    formData.append('imagen', {
+    formData.append("imagen", {
       uri: imagenUri,
-      name: filename || 'imagen.jpg',
-      type
+      name: filename,
+      type,
     } as any);
   }
 
@@ -139,82 +140,57 @@ export const crearRecetaConImagen = async (
       },
     });
 
-    const responseData = await response.json();
+    const data = await response.json();
 
     if (!response.ok) {
       return {
         status: response.status,
-        error: responseData.message || "Error al crear receta",
+        error: data?.message || "Error al crear receta",
       };
     }
 
     return {
       status: response.status,
-      data: responseData,
+      data,
     };
   } catch (error) {
-    console.error("Error en crearRecetaConImagen:", error);
-    return {
-      status: 500,
-      error: "Error de conexión",
-    };
+    return serverErrorResponse(error);
   }
 };
-
 
 export const getRecetaById = async (
   id: string,
   token: string | null
 ): Promise<ApiResponse<Receta>> => {
-  if (!token) {
-    return {
-      status: 401,
-      error: 'No estás autenticado'
-    };
-  }
+  if (!token) return unauthorizedResponse();
 
-  try {
-    const response = await fetch(`${apiFast}api/recetas/${id}`, {
-      method: 'GET',
+  const { ok, response, data, error } = await safeFetch(
+    `${apiFast}api/recetas/${id}`,
+    {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    });
-
-    const responseText = await response.text();
-    if (!responseText.trim()) {
-      return {
-        status: response.status,
-        error: response.status === 404 ? 'Receta no encontrada' : 'Respuesta vacía del servidor',
-      };
     }
+  );
 
-    const data = JSON.parse(responseText);
-
-    if (!response.ok) {
-      return {
-        status: response.status,
-        error: data.message || `Error ${response.status}`,
-      };
-    }
-
-    const recetaProcesada = {
-      ...data,
-      imagenUrl: data.imagenNombre 
-        ? `${apiFast}uploads/${data.imagenNombre}`
-        : null
-    };
-
+  if (!ok) {
     return {
-      status: response.status,
-      data: recetaProcesada,
-    };
-  } catch (error) {
-    console.error('Error en getRecetaById:', error);
-    return {
-      status: 500,
-      error: error instanceof Error ? error.message : 'Error de conexión',
+      status: response?.status || 500,
+      error: error || "Error desconocido",
     };
   }
+
+  const recetaProcesada = {
+    ...data,
+    imagenUrl: data.imagenNombre
+      ? `${apiFast}uploads/${data.imagenNombre}`
+      : null,
+  };
+
+  return {
+    status: response!.status,
+    data: recetaProcesada,
+  };
 };

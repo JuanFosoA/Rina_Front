@@ -11,8 +11,6 @@ const HomeLayout = () => {
   useEffect(() => {
     console.log("expoPushToken", expoPushToken);
     console.log("notification", notification);
-    
-    
   })
 
   return (

@@ -2,8 +2,8 @@ import { View, Text, ImageSourcePropType } from 'react-native'
 import React from 'react'
 import UserProfileButton from '../../components/atoms/UserProfileButton'
 import SearchFilter from '../../components/atoms/SearchFilter'
-import CategoriesFilter from '../../components/atoms/CategoriesFilter'
-import RecipeCard from '../../components/atoms/RecipeCard'
+import RecipeCard from '../../components/organism/RecipeCard'
+import CategoriesFilter from '../../components/molecules/CategoriesFilter'
 
 type userIcon = {
         image: ImageSourcePropType;

@@ -13,7 +13,7 @@ const UserProfileButton = ({headerIcon}: Props) => {
       onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
       className="w-16 h-16 rounded-full overflow-hidden m-1"
     >
-      <Image source={headerIcon } className="w-full h-full" />
+      <Image source={headerIcon} className="w-full h-full" />
     </Pressable>
   )
 }

@@ -1,35 +1,5 @@
-import {  apiFast, menuData } from "./token";
+import { apiFast, menuData } from "./token";
 
-export const getMenu = async (token: string | null): Promise<any> => {
-  try {
-    const response = await fetch(menuData.getMenu, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-
-    if (!response.ok) {
-      return {
-        status: response.status,
-        error: data.message || "Error al obtener Menu",
-      };
-    }
-
-    return {
-      status: response.status,
-      data: data,
-    };
-  } catch (error) {
-    console.error("Error en getMenu:", error);
-    return {
-      status: 500,
-      error: "Error de conexión",
-    };
-  }
-};
 
 interface Cantidad {
   valor: number;
@@ -47,146 +17,158 @@ interface Menu {
   };
 }
 
+interface ApiResponse<T> {
+  status: number;
+  data?: T;
+  error?: string;
+}
+
+
+const unauthorizedResponse = <T>(): ApiResponse<T> => ({
+  status: 401,
+  error: "No estás autenticado",
+});
+
+
+const safeFetch = async (input: RequestInfo, init?: RequestInit) => {
+  try {
+    const response = await fetch(input, init);
+    const text = await response.text();
+
+    if (!text.trim()) {
+      return { ok: false, response, error: "Respuesta vacía del servidor" };
+    }
+
+    try {
+      const data = JSON.parse(text);
+      return { ok: response.ok, response, data, error: null };
+    } catch (parseError) {
+      console.error("Error parseando JSON:", parseError);
+      return { ok: false, response, error: "Formato de respuesta inválido" };
+    }
+  } catch (error) {
+    console.error("Error en safeFetch:", error);
+    return {
+      ok: false,
+      response: null,
+      error: error instanceof Error ? error.message : "Error de conexión",
+    };
+  }
+};
+
+
+export const getMenu = async (
+  token: string | null
+): Promise<ApiResponse<any>> => {
+  if (!token) return unauthorizedResponse();
+
+  const { ok, response, data, error } = await safeFetch(menuData.getMenu, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!ok) {
+    return {
+      status: response?.status || 500,
+      error: error || "Error al obtener menú",
+    };
+  }
+
+  return {
+    status: response!.status,
+    data,
+  };
+};
+
 export const getListaMenu = async (
   menu: Menu,
   token: string | null
-): Promise<{ status: number; data?: IngredienteCompra[]; error?: string }> => {
-  if (!token) {
+): Promise<ApiResponse<IngredienteCompra[]>> => {
+  if (!token) return unauthorizedResponse();
+
+  const { ok, response, data, error } = await safeFetch(menuData.getListaMenu, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(menu),
+  });
+
+  if (!ok) {
     return {
-      status: 401,
-      error: "No estás autenticado",
+      status: response?.status || 500,
+      error: error || "Error al obtener la lista de compras",
     };
   }
 
-  try {
-    const response = await fetch(menuData.getListaMenu, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(menu),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return {
-        status: response.status,
-        error: data.message || "Error al obtener la lista de compras",
-      };
-    }
-
-    return {
-      status: response.status,
-      data: data as IngredienteCompra[],
-    };
-  } catch (error) {
-    console.error("Error en getListaMenu:", error);
-    return {
-      status: 500,
-      error: "Error de conexión",
-    };
-  }
+  return {
+    status: response!.status,
+    data: data as IngredienteCompra[],
+  };
 };
 
 export const crearMenu = async (
-  MenuData: object,
+  menuDataToSend: object,
   token: string | null
-): Promise<any> => {
-  if (!token) {
+): Promise<ApiResponse<any>> => {
+  if (!token) return unauthorizedResponse();
+
+  const body = JSON.stringify({ dias: menuDataToSend });
+
+  const { ok, response, data, error } = await safeFetch(menuData.crearMenu, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body,
+  });
+
+  if (!ok) {
     return {
-      status: 401,
-      error: "No estás autenticado",
+      status: response?.status || 500,
+      error: error || "Error al crear menú",
     };
   }
 
-  const dataToSend = {
-    dias: MenuData,
+  return {
+    status: response!.status,
+    data,
   };
-
-  try {
-    const response = await fetch(menuData.crearMenu, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(dataToSend),
-    });
-
-    const responseData = await response.json();
-
-    if (!response.ok) {
-      return {
-        status: response.status,
-        error: responseData.message || "Error al crear Menu",
-      };
-    }
-
-    return {
-      status: response.status,
-      data: responseData,
-    };
-  } catch (error) {
-    console.error("Error en Menu:", error);
-    return {
-      status: 500,
-      error: "Error de conexión",
-    };
-  }
 };
-
-
 
 export const getMenuById = async (
   id: string,
   token: string | null
-): Promise<any> => {
-  if (!token) {
-    return {
-      status: 401,
-      error: 'No estás autenticado'
-    };
-  }
+): Promise<ApiResponse<any>> => {
+  if (!token) return unauthorizedResponse();
 
-  try {
-    const response = await fetch(`${apiFast}api/menus/${id}`, {
-      method: 'GET',
+  const { ok, response, data, error } = await safeFetch(
+    `${apiFast}api/menus/${id}`,
+    {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    });
-
-    const responseText = await response.text();
-    if (!responseText.trim()) {
-      return {
-        status: response.status,
-        error: response.status === 404 ? 'Menu no encontrada' : 'Respuesta vacía del servidor',
-      };
     }
+  );
 
-    const data = JSON.parse(responseText);
-
-    if (!response.ok) {
-      return {
-        status: response.status,
-        error: data.message || `Error ${response.status}`,
-      };
-    }
-
-    
-
+  if (!ok) {
     return {
-      status: response.status,
-      data: data,
-    };
-  } catch (error) {
-    console.error('Error en getMenuById:', error);
-    return {
-      status: 500,
-      error: error instanceof Error ? error.message : 'Error de conexión',
+      status: response?.status || 500,
+      error:
+        error ||
+        (response?.status === 404 ? "Menú no encontrado" : "Error desconocido"),
     };
   }
+
+  return {
+    status: response!.status,
+    data,
+  };
 };

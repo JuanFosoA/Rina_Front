@@ -1,8 +1,8 @@
 import { View, Dimensions } from 'react-native'
 import React from 'react'
 import {ImageSliderType } from '../../data/SliderData'
-import SliderItem from '../atoms/SliderItem'
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import SliderItem from './SliderItem'
 
 type Props = {
   itemList : ImageSliderType[] 

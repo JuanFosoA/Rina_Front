@@ -1,8 +1,8 @@
 import { Image, View, Text } from 'react-native'
 import React from 'react'
-import CategoriesFilter from '../../components/atoms/CategoriesFilter'
 import Slider from '../../components/molecules/Slider'
 import { ImageSlider } from '../../data/SliderData'
+import CategoriesFilter from '../../components/molecules/CategoriesFilter'
 
 const ProfileMenu = () => {
   return (

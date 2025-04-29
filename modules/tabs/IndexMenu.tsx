@@ -4,7 +4,7 @@ import Slider from '../../components/molecules/Slider'
 import { ImageSlider } from '../../data/SliderData'
 import SearchFilter from '../../components/atoms/SearchFilter'
 import UserProfileButton from '../../components/atoms/UserProfileButton'
-import RecipeCard from '../../components/atoms/RecipeCard'
+import RecipeCard from '../../components/organism/RecipeCard'
 
 type userIcon = {
         image: ImageSourcePropType;

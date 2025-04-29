@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
-import MenuCreator from '../../components/organism/recipes';
+import MenuCreator from '../../components/organism/MenuCreator';
 
 const menu = () => {
   return (
