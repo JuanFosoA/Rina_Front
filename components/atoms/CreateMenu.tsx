@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 export default function CreateMenu() {
   return (
     <Pressable
+    testID="create-menu-button"
       className="absolute bottom-6 right-6 bg-blue-600 rounded-full w-16 h-16 items-center justify-center shadow-lg"
       onPress={() => router.push('(menu)/menu')}
     >

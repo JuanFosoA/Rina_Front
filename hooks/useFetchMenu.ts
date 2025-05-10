@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getMenu } from "../server/menu.server";
 import { useAuth } from "../context/AuthContext";
+import { GetMenuCached } from "../lib/fetchWithCache";
 
 export function useFetchMenu() {
   const [data, setData] = useState<any[]>([]);
@@ -11,7 +11,7 @@ export function useFetchMenu() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getMenu(userToken);
+        const res = await GetMenuCached(userToken);
         if (res.error) {
           setError(res.error);
           return;

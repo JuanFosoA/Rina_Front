@@ -9,6 +9,7 @@ interface Props {
 const CategoryButton: React.FC<Props> = ({ label, isSelected }) => {
   return (
     <View
+      testID="category-container"
       className="mr-4 rounded-lg px-4 py-3 my-4 shadow-black shadow-lg"
       style={{
         backgroundColor: isSelected ? '#EF233C' : '#FFF',

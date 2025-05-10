@@ -21,6 +21,7 @@ interface AnimatedContainerProps {
 const AnimatedContainer: React.FC<AnimatedContainerProps> = ({ children, animatedStyle }) => {
   return (
     <Animated.View
+      testID="animated-container"
       className="bg-white rounded-xl shadow-lg shadow-black/60 justify-center items-center overflow-hidden"
       style={[styles.container, animatedStyle]}
     >

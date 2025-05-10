@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { getMenuById, getListaMenu } from "../../server/menu.server";
+import { getListaMenu } from "../../server/menu.server";
 import { fetchRecipeById } from "../../server/recipe.server";
 import { useAuth } from "../../context/AuthContext";
 import { Menu, Receta, IngredienteCompra } from "./types";
+import { GetMenuByIdCached } from "../../lib/fetchWithCache";
 
 
 export function useMenuDetail(id: string) {
@@ -17,7 +18,7 @@ export function useMenuDetail(id: string) {
   useEffect(() => {
     const loadMenu = async () => {
       try {
-        const menuResponse = await getMenuById(id, userToken);
+        const menuResponse = await GetMenuByIdCached(id, userToken);
 
         if (!menuResponse?.data?.dias) {
           console.error("Formato de menú inválido:", menuResponse);

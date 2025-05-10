@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Modal, FlatList, View, Text } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
-import { getRecetas } from '../../server/recetas.server';
 import MealButton from '../atoms/MealButton';
 import PrimaryButton from '../atoms/PrimaryButton';
+import { GetRecetasCached } from '../../lib/fetchWithCache';
 
 type MealSelectorProps = {
   day: string;
@@ -29,7 +29,7 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
 
       setLoading(true);
       try {
-        const response = await getRecetas(userToken);
+        const response = await GetRecetasCached(userToken);
         if (response.data) {
           const recipeList = response.data.map((receta: { id: string; nombre: string; }) => ({
             id: receta.id,
