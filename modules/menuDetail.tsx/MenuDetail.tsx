@@ -18,9 +18,13 @@ const MenuDetail = () => {
       <View className="p-6">
         <Text className="text-2xl font-bold mb-4 text-center">Detalle del Menú</Text>
 
-        {menu && Object.entries(menu).map(([dia, comidas]) => (
-          <MenuDaySection key={dia} dia={dia} comidas={comidas} recipes={recipes} />
-        ))}
+        {menu &&
+          Object.entries(menu)
+            .filter(([_, comidas]) => comidas != null)
+            .map(([dia, comidas]) => (
+              <MenuDaySection key={dia} dia={dia} comidas={comidas} recipes={recipes} />
+            ))}
+
 
         {listaCompras && <ShoppingList lista={listaCompras} />}
       </View>

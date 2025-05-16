@@ -65,19 +65,20 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
         selected={!!selectedRecipeId}
         onPress={() => setModalVisible(true)}
       />
-
       <Modal
         animationType="slide"
         transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View className="flex-1 justify-center items-center bg-gray-500 bg-opacity-80">
-          <View className="bg-white p-4 rounded-lg w-3/4">
-            <Text className="text-lg font-bold mb-4 capitalize">Selecciona una receta para {mealType}</Text>
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-60">
+          <View className="bg-white p-6 rounded-xl w-11/12 max-h-[80%]">
+            <Text className="text-xl font-bold mb-4 capitalize text-center">
+              Selecciona una receta para {mealType}
+            </Text>
 
             {loading ? (
-              <Text>Cargando recetas...</Text>
+              <Text className="text-center">Cargando recetas...</Text>
             ) : (
               <FlatList
                 data={recipes}
@@ -86,16 +87,21 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
                   <PrimaryButton
                     title={item.name}
                     onPress={() => handleSelect(item.id)}
-                    style={{ marginVertical: 4 }}
+                    style={{ marginVertical: 6 }}
                   />
                 )}
+                contentContainerStyle={{ paddingBottom: 10 }}
+                showsVerticalScrollIndicator={false}
               />
             )}
 
             <PrimaryButton
               title="Cancelar"
               onPress={() => setModalVisible(false)}
-              style={{ marginTop: 10, backgroundColor: '#ccc' }}
+              style={{
+                marginTop: 12,
+                backgroundColor: '#e5e7eb',
+              }}
             />
           </View>
         </View>

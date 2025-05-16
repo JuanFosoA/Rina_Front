@@ -5,7 +5,7 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 export default function MenuCard({ item, onPress }: { item: any, onPress: () => void }) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <Text style={styles.title}>{item.dia}</Text>
+      <Text style={styles.title}>{item.title}</Text>
     </Pressable>
   );
 }
