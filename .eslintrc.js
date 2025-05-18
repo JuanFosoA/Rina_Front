@@ -3,6 +3,6 @@ module.exports = {
   extends: "expo",
   ignorePatterns: ["/dist/*"],
   rules: {
-    "no-unused-vars": "warn"
-  }
+    "no-unused-vars": "warn",
+  },
 };

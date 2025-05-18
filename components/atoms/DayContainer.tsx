@@ -7,8 +7,11 @@ type Props = {
 };
 
 const DayContainer = ({ day, children, style }: Props) => (
-  <View className="bg-[#faf6eb] rounded-full items-center" style={style}>
-    <Text className="text-secondary mb-4 text-lg font-semibold capitalize">
+  <View
+    className="bg-[#f7f3e9] rounded-full items-center shadow-sm"
+    style={style}
+  >
+    <Text className="text-[#a49c8f] mb-4 text-lg font-semibold capitalize">
       {day}
     </Text>
     {children}

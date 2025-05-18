@@ -8,7 +8,7 @@ type Props = {
 
 const PrimaryButton = ({ title, onPress, style }: Props) => (
   <TouchableOpacity
-    className="bg-fith rounded-full p-4 my-12 w-32 items-center mx-2"
+    className="bg-fith rounded-lg p-4 my-10 w-32 items-center mx-4"
     style={style}
     onPress={onPress}
   >

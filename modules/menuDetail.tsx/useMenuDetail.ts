@@ -18,7 +18,7 @@ export function useMenuDetail(id: string) {
   const [menu, setMenu] = useState<Menu | null>(null);
   const [recipes, setRecipes] = useState<Record<string, Receta>>({});
   const [listaCompras, setListaCompras] = useState<IngredienteCompra[] | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +53,7 @@ export function useMenuDetail(id: string) {
         const allIds = Object.values(dias)
           .flatMap((comidas) => Object.values(comidas))
           .filter(
-            (recetaId): recetaId is string => typeof recetaId === "string"
+            (recetaId): recetaId is string => typeof recetaId === "string",
           );
 
         const uniqueIds = [...new Set(allIds)];
@@ -62,7 +62,7 @@ export function useMenuDetail(id: string) {
           uniqueIds.map(async (recetaId) => {
             const receta = await fetchRecipeById(recetaId, userToken);
             return receta as unknown as Receta;
-          })
+          }),
         );
 
         const recetaMap = Object.fromEntries(recetasData.map((r) => [r.id, r]));

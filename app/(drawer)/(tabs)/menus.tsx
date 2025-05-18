@@ -7,15 +7,14 @@ import WeeklyMenuSetter from "../../../components/organism/WeeklyMenuSetter";
 const saved = () => {
   return (
     <View style={styles.container}>
-  <View style={{ marginVertical: 8 }}>
-    <WeeklyMenuSetter />
-  </View>
-  <View style={{ flex: 1 }}>
-    <Gallery />
-  </View>
-    <CreateMenu />
-</View>
-
+      <View style={{ marginVertical: 8 }}>
+        <WeeklyMenuSetter />
+      </View>
+      <View style={{ flex: 1 }}>
+        <Gallery />
+      </View>
+      <CreateMenu />
+    </View>
   );
 };
 

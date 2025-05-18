@@ -1,5 +1,5 @@
 //export const apiFast = "https://zzzbuilds-server.lat/";
-export const apiFast = "https://holding-homework-themselves-dutch.trycloudflare.com/";
+export const apiFast = "https://desirable-florence-ruby-spine.trycloudflare.com/";
 export const authToken = {
   login: apiFast + "api/auth/signin",
   register: apiFast + "api/auth/signup",

@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get("window");
 const roundTo8 = (value: number) => Math.floor(value / 8) * 8;
 
 const presetWidth = roundTo8(width * 0.35);
-const columnHeight = roundTo8(height * 0.68);
+const columnHeight = roundTo8(height * 0.678);
 const containerPadding = roundTo8(height * 0.02);
 const presetHeight = roundTo8(columnHeight * 0.9);
 
@@ -25,7 +25,15 @@ export default function MenuCreator() {
   const router = useRouter();
   const { userToken } = useAuth();
 
-  const days = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+  const days = [
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+    "sabado",
+    "domingo",
+  ];
   const mealTypes = ["desayuno", "almuerzo", "cena"];
 
   const defaultValues: FormData = { name: "" };
@@ -36,7 +44,9 @@ export default function MenuCreator() {
     });
   });
 
-  const { control, handleSubmit, setValue, watch } = useForm<FormData>({ defaultValues });
+  const { control, handleSubmit, setValue, watch } = useForm<FormData>({
+    defaultValues,
+  });
   const formData = watch();
 
   const onSubmit = (data: FormData) => {
@@ -58,10 +68,13 @@ export default function MenuCreator() {
 
     const payload = {
       name: data.name || null,
-      dias: days.reduce((acc, day) => {
-        acc[day] = data[day];
-        return acc;
-      }, {} as Record<string, Record<string, string>>),
+      dias: days.reduce(
+        (acc, day) => {
+          acc[day] = data[day];
+          return acc;
+        },
+        {} as Record<string, Record<string, string>>,
+      ),
     };
 
     crearMenu(payload, userToken);
@@ -79,24 +92,29 @@ export default function MenuCreator() {
 
   return (
     <View
-      className="flex-1 bg-tertiary w-full"
+      className="flex-1 bg-[#d7cbbd] w-full"
       style={{ padding: containerPadding, height }}
     >
       <View className="flex-row justify-center my-4">
         <TitleText>Create Menu</TitleText>
       </View>
 
-      <View className="mb-4 px-4">
+      <View className="mb-4 px-2">
         <Controller
           control={control}
           name="name"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              className="bg-white rounded-md p-3 text-black"
+              className="bg-white rounded-xl p-4 text-black shadow-md"
               placeholder="Título del menú"
+              placeholderTextColor="#a49c8f"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              style={{
+                borderWidth: 1,
+                borderColor: "rgba(164, 156, 143, 0.3)",
+              }}
             />
           )}
         />

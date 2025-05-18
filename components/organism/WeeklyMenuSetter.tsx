@@ -85,7 +85,6 @@ const WeeklyMenuSetter = () => {
           </View>
         </View>
       </Modal>
-
     </View>
   );
 };

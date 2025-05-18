@@ -8,15 +8,12 @@ export interface ApiResponse<T> {
 
 export const getNow = () => new Date();
 
-
-
 export async function saveToCache(
   db: any,
   table: any,
   data: any,
   name: string,
 ) {
-
   await db.delete(table);
   await db.insert(table).values({ json: data });
   const lastime = getNow();
@@ -28,7 +25,6 @@ export async function saveToCache(
       target: schema.cronology.name,
       set: { lastime: lastime },
     });
-
 }
 
 export async function getFromCache(db: any, table: any) {
