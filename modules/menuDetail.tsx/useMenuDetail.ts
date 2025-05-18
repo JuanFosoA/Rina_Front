@@ -5,25 +5,27 @@ import { useAuth } from "../../context/AuthContext";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import * as schema from "../../db/schema";
-import { Menu, Receta, IngredienteCompra } from "./types";
+import { Receta, IngredienteCompra } from "./types";
 import { saveToCache, getFromCache } from "../../lib/fetchWithCache";
 
 export function useMenuDetail(id: string) {
   const { userToken } = useAuth();
   const rawDb = useSQLiteContext();
 
-  // Memoiza db para que no cambie entre renders
   const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
 
-  const [menu, setMenu] = useState<Menu | null>(null);
+  const [menu, setMenu] = useState<Record<
+    string,
+    Record<string, string>
+  > | null>(null);
   const [recipes, setRecipes] = useState<Record<string, Receta>>({});
   const [listaCompras, setListaCompras] = useState<IngredienteCompra[] | null>(
-    null,
+    null
   );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!userToken) return; // evita fetch sin token
+    if (!userToken) return;
 
     const loadMenu = async () => {
       try {
@@ -50,10 +52,11 @@ export function useMenuDetail(id: string) {
 
         setMenu(dias);
 
+        // Extraemos IDs únicos de recetas que no sean cadenas vacías
         const allIds = Object.values(dias)
           .flatMap((comidas) => Object.values(comidas))
           .filter(
-            (recetaId): recetaId is string => typeof recetaId === "string",
+            (recetaId) => typeof recetaId === "string" && recetaId.trim() !== ""
           );
 
         const uniqueIds = [...new Set(allIds)];
@@ -62,7 +65,7 @@ export function useMenuDetail(id: string) {
           uniqueIds.map(async (recetaId) => {
             const receta = await fetchRecipeById(recetaId, userToken);
             return receta as unknown as Receta;
-          }),
+          })
         );
 
         const recetaMap = Object.fromEntries(recetasData.map((r) => [r.id, r]));

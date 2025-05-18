@@ -22,7 +22,11 @@ const MenuDetail = () => {
 
         {menu &&
           Object.entries(menu)
-            .filter(([_, comidas]) => comidas != null)
+            .filter(([_, comidas]) =>
+              Object.values(comidas).some(
+                (valor) => valor && valor.trim() !== "",
+              ),
+            )
             .map(([dia, comidas]) => (
               <MenuDaySection
                 key={dia}

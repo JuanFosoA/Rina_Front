@@ -11,7 +11,7 @@ export default function MenuCard({
 }) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
-      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.title}>{item.name}</Text>
     </Pressable>
   );
 }
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     padding: 16,
-    backgroundColor: "#faf6eb",
+    backgroundColor: "#E9C46A",
     borderRadius: 10,
   },
   title: {

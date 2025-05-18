@@ -27,7 +27,10 @@ export const MealSelector = ({
 
   const scaleValue = new Animated.Value(1);
   const onPressIn = () => {
-    Animated.spring(scaleValue, { toValue: 0.95, useNativeDriver: true }).start();
+    Animated.spring(scaleValue, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
   };
   const onPressOut = () => {
     Animated.spring(scaleValue, { toValue: 1, useNativeDriver: true }).start();
@@ -50,10 +53,10 @@ export const MealSelector = ({
           onPress={() => setModalVisible(true)}
         >
           <MealButton
-        label={selectedRecipeId ? selectedName : "Seleccionar receta"}
-        selected={!!selectedRecipeId}
-        onPress={() => setModalVisible(true)}
-      />
+            label={selectedRecipeId ? selectedName : "Seleccionar receta"}
+            selected={!!selectedRecipeId}
+            onPress={() => setModalVisible(true)}
+          />
         </Pressable>
       </Animated.View>
 
@@ -70,7 +73,9 @@ export const MealSelector = ({
             </Text>
 
             {loading ? (
-              <Text className="text-center my-6 text-[#a49c8f]">Cargando recetas...</Text>
+              <Text className="text-center my-6 text-[#a49c8f]">
+                Cargando recetas...
+              </Text>
             ) : (
               <FlatList
                 data={recipes}
@@ -85,14 +90,14 @@ export const MealSelector = ({
                 showsVerticalScrollIndicator={false}
               />
             )}
-              <PrimaryButton
-                title="Cancelar"
-                onPress={() => setModalVisible(false)}
-                style={{
-                  marginTop: 24,
-                  backgroundColor: "#e5e7eb",
-                }}
-              />
+            <PrimaryButton
+              title="Cancelar"
+              onPress={() => setModalVisible(false)}
+              style={{
+                marginTop: 24,
+                backgroundColor: "#e5e7eb",
+              }}
+            />
           </View>
         </View>
       </Modal>

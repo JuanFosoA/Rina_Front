@@ -9,8 +9,6 @@ import { saveToCache, getFromCache } from "../lib/fetchWithCache";
 export function useFetchMenu() {
   const { userToken } = useAuth();
   const rawDb = useSQLiteContext();
-
-  // Memoizar la creación de db para que no cambie en cada render
   const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
 
   const [data, setData] = useState<any[]>([]);
@@ -27,32 +25,26 @@ export function useFetchMenu() {
       }
 
       const response = await getMenu(userToken);
-      let menuData: any;
+      let recetas: any[] = [];
 
-      if (response.status === 200 && response.data) {
-        menuData = response.data;
-        await saveToCache(db, schema.menus, menuData, "getMenu");
+      if (response.status === 200 && Array.isArray(response.data)) {
+        recetas = response.data.map((receta) => ({
+          id: receta._id?.$oid ?? receta._id,
+          nombre: receta.nombre,
+          ...receta,
+        }));
+        await saveToCache(db, schema.menus, recetas, "getMenu");
       } else {
         const fallbackData = await getFromCache(db, schema.menus);
-        menuData = fallbackData[0] || {};
-        console.warn("Mostrando menú desde caché");
+        recetas = fallbackData || [];
+        console.warn("Mostrando recetas desde caché");
       }
 
-      if (!menuData || typeof menuData !== "object") {
-        throw new Error("Formato inválido de menú");
-      }
-
-      const menuArray = Object.entries(menuData).map(([dia, comidas]) => ({
-        id: dia,
-        dia,
-        ...(typeof comidas === "object" && comidas !== null ? comidas : {}),
-      }));
-
-      setData(menuArray);
+      setData(recetas);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Error desconocido";
-      console.error("Error al obtener menú:", errorMessage);
+      console.error("Error al obtener recetas:", errorMessage);
       setError(errorMessage);
       setData([]);
     } finally {
