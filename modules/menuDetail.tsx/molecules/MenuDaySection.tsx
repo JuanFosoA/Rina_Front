@@ -17,7 +17,9 @@ const MenuDaySection = ({ dia, comidas, recipes }: MenuDaySectionProps) => (
           <Text className="text-base font-bold">{receta.nombre}</Text>
         </View>
       ) : (
-        <Text key={tipoComida} className="text-red-500">Sin receta para {tipoComida}</Text>
+        <Text key={tipoComida} className="text-red-500">
+          Sin receta para {tipoComida}
+        </Text>
       );
     })}
   </View>

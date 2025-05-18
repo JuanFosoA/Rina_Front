@@ -1,5 +1,5 @@
-export const apiFast = "https://zzzbuilds-server.lat/";
-
+//export const apiFast = "https://zzzbuilds-server.lat/";
+export const apiFast = "https://holding-homework-themselves-dutch.trycloudflare.com/";
 export const authToken = {
   login: apiFast + "api/auth/signin",
   register: apiFast + "api/auth/signup",
@@ -13,8 +13,8 @@ export const recipeToken = {
 export const recetasData = {
   getRecetas: apiFast + "api/recetas",
   crearRecetaConImagen: apiFast + "api/recetas",
-  getImagen: apiFast + "imagen"
-}
+  getImagen: apiFast + "imagen",
+};
 
 export const menuData = {
   getMenu: apiFast + "api/menus",

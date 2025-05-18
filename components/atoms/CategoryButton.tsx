@@ -1,5 +1,5 @@
-import { Text, View } from 'react-native';
-import React from 'react';
+import { Text, View } from "react-native";
+import React from "react";
 
 interface Props {
   label: string;
@@ -12,12 +12,12 @@ const CategoryButton: React.FC<Props> = ({ label, isSelected }) => {
       testID="category-container"
       className="mr-4 rounded-lg px-4 py-3 my-4 shadow-black shadow-lg"
       style={{
-        backgroundColor: isSelected ? '#EF233C' : '#FFF',
+        backgroundColor: isSelected ? "#EF233C" : "#FFF",
         shadowOpacity: 0.1,
         shadowRadius: 7,
       }}
     >
-      <Text style={{ color: isSelected ? '#FFF' : '#000' }}>{label}</Text>
+      <Text style={{ color: isSelected ? "#FFF" : "#000" }}>{label}</Text>
     </View>
   );
 };

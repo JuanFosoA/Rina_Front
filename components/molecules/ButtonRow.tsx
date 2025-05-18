@@ -1,6 +1,6 @@
-import { View } from 'react-native';
-import PrimaryButton from '../atoms/PrimaryButton';
-import SecondaryButton from '../atoms/SecondaryButton';
+import { View } from "react-native";
+import PrimaryButton from "../atoms/PrimaryButton";
+import SecondaryButton from "../atoms/SecondaryButton";
 
 type ButtonRowProps = {
   onCreate: () => void;

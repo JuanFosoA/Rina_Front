@@ -1,13 +1,20 @@
-import { useState, useEffect } from "react";
-import { getListaMenu } from "../../server/menu.server";
+import { useState, useEffect, useMemo } from "react";
+import { getListaMenu, getMenuById } from "../../server/menu.server";
 import { fetchRecipeById } from "../../server/recipe.server";
 import { useAuth } from "../../context/AuthContext";
+import { useSQLiteContext } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import * as schema from "../../db/schema";
 import { Menu, Receta, IngredienteCompra } from "./types";
-import { GetMenuByIdCached } from "../../lib/fetchWithCache";
-
+import { saveToCache, getFromCache } from "../../lib/fetchWithCache";
 
 export function useMenuDetail(id: string) {
   const { userToken } = useAuth();
+  const rawDb = useSQLiteContext();
+
+  // Memoiza db para que no cambie entre renders
+  const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
+
   const [menu, setMenu] = useState<Menu | null>(null);
   const [recipes, setRecipes] = useState<Record<string, Receta>>({});
   const [listaCompras, setListaCompras] = useState<IngredienteCompra[] | null>(
@@ -16,25 +23,40 @@ export function useMenuDetail(id: string) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!userToken) return; // evita fetch sin token
+
     const loadMenu = async () => {
       try {
-        const menuResponse = await GetMenuByIdCached(id, userToken);
+        let menuData: any;
 
-        if (!menuResponse?.data?.dias) {
-          console.error("Formato de menú inválido:", menuResponse);
+        const result = await getMenuById(id, userToken);
+
+        if (result.status === 200 && result.data) {
+          menuData = result.data;
+          await saveToCache(db, schema.menus, menuData, "getMenuById");
+        } else {
+          const fallbackData = await getFromCache(db, schema.menus);
+          menuData = fallbackData.find((d: any) => d?.id === id);
+          console.warn("Mostrando menú desde caché");
+        }
+
+        const dias = menuData?.dias as
+          | Record<string, Record<string, string>>
+          | undefined;
+        if (!dias) {
+          console.error("Formato de menú inválido:", menuData);
           return;
         }
 
-        const menuData = menuResponse.data.dias as Menu;
-        setMenu(menuData);
+        setMenu(dias);
 
-        const allIds = Object.values(menuData)
+        const allIds = Object.values(dias)
           .flatMap((comidas) => Object.values(comidas))
           .filter(
             (recetaId): recetaId is string => typeof recetaId === "string"
           );
 
-        const uniqueIds = Array.from(new Set(allIds));
+        const uniqueIds = [...new Set(allIds)];
 
         const recetasData = await Promise.all(
           uniqueIds.map(async (recetaId) => {
@@ -43,14 +65,10 @@ export function useMenuDetail(id: string) {
           })
         );
 
-        const recetaMap: Record<string, Receta> = {};
-        recetasData.forEach((receta) => {
-          recetaMap[receta.id] = receta;
-        });
-
+        const recetaMap = Object.fromEntries(recetasData.map((r) => [r.id, r]));
         setRecipes(recetaMap);
 
-        const listaResponse = await getListaMenu(menuData, userToken);
+        const listaResponse = await getListaMenu(dias, userToken);
         if (listaResponse.data) {
           setListaCompras(listaResponse.data);
         } else {
@@ -64,7 +82,7 @@ export function useMenuDetail(id: string) {
     };
 
     loadMenu();
-  }, [id, userToken]);
+  }, [db, id, userToken]);
 
   return { menu, recipes, listaCompras, loading };
 }

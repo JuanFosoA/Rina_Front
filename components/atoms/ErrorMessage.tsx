@@ -1,5 +1,5 @@
-import { View, Text, Pressable } from 'react-native';
-import React from 'react';
+import { View, Text, Pressable } from "react-native";
+import React from "react";
 
 interface ErrorMessageProps {
   error: string;

@@ -1,9 +1,7 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .nonempty({ message: "El email no puede estar vacío" }),
+  email: z.string().nonempty({ message: "El email no puede estar vacío" }),
 
   password: z
     .string()

@@ -1,5 +1,12 @@
 import React from "react";
-import { View, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -12,7 +19,7 @@ import { useAuth } from "../../context/AuthContext";
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginModule() {
-  const { login_AuthContext, isLoggingIn  } = useAuth();
+  const { login_AuthContext, isLoggingIn } = useAuth();
   const {
     control,
     handleSubmit,
@@ -32,7 +39,10 @@ export default function LoginModule() {
         throw new Error("Token inválido o no recibido");
       }
     } catch (error) {
-      Alert.alert("Error", error instanceof Error ? error.message : "Error desconocido");
+      Alert.alert(
+        "Error",
+        error instanceof Error ? error.message : "Error desconocido",
+      );
     }
   };
 
@@ -53,7 +63,9 @@ export default function LoginModule() {
           />
         )}
       />
-      {errors.email && <Text className={authStyles.errorText}>{errors.email.message}</Text>}
+      {errors.email && (
+        <Text className={authStyles.errorText}>{errors.email.message}</Text>
+      )}
 
       <Controller
         control={control}
@@ -68,12 +80,17 @@ export default function LoginModule() {
           />
         )}
       />
-      {errors.password && <Text className={authStyles.errorText}>{errors.password.message}</Text>}
+      {errors.password && (
+        <Text className={authStyles.errorText}>{errors.password.message}</Text>
+      )}
 
-      <TouchableOpacity className={authStyles.button} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity
+        className={authStyles.button}
+        onPress={handleSubmit(onSubmit)}
+      >
         {isLoggingIn ? (
           <ActivityIndicator size="small" color="#fff" />
-            ) : (
+        ) : (
           <Text className={authStyles.buttonText}>Iniciar Sesión</Text>
         )}
       </TouchableOpacity>

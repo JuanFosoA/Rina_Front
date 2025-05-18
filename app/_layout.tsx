@@ -1,19 +1,19 @@
 // app/_layout.tsx
 
-import { Stack } from 'expo-router';
-import { Suspense, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
-import { SQLiteProvider, useSQLiteContext } from 'expo-sqlite';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import migrations from '../drizzle/migrations';
+import { Stack } from "expo-router";
+import { Suspense, useEffect } from "react";
+import { ActivityIndicator } from "react-native";
+import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import migrations from "../drizzle/migrations";
 
-import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 
-import { AuthProvider } from '../context/AuthContext';
-import { usePushNotifications } from '../hooks/usePushNotifications';
+import { AuthProvider } from "../context/AuthContext";
+import { usePushNotifications } from "../hooks/usePushNotifications";
 
-const DATABASE_NAME = 'tasks';
+const DATABASE_NAME = "tasks";
 
 export default function RootLayout() {
   return (
@@ -36,12 +36,12 @@ function App() {
   const { expoPushToken, notification } = usePushNotifications();
 
   useEffect(() => {
-    console.log('Token:', expoPushToken);
-    console.log('Notificación:', notification);
+    console.log("Token:", expoPushToken);
+    console.log("Notificación:", notification);
   }, [expoPushToken, notification]);
 
   if (error) {
-    console.error('Error corriendo migraciones', error);
+    console.error("Error corriendo migraciones", error);
   }
 
   return (

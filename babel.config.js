@@ -1,16 +1,14 @@
+// eslint-disable-next-line no-unused-vars
 const plugin = require("tailwindcss");
 
-module.exports = function(api) {
-    api.cache(true);
+module.exports = function (api) {
+  api.cache(true);
 
-    return {
-        presets:
-        [
-            ["babel-preset-expo", {jsxImportSource: "nativewind"}],
-            "nativewind/babel"
-        ],
-        plugins: [
-            ['inline-import', {extensions: ['.sql'],}]
-        ],
-    }
-}
+  return {
+    presets: [
+      ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+      "nativewind/babel",
+    ],
+    plugins: [["inline-import", { extensions: [".sql"] }]],
+  };
+};

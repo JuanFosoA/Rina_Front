@@ -1,11 +1,11 @@
-import { View, FlatList } from 'react-native';
-import React from 'react';
-import { Receta } from '../../server/recetas.server';
-import { useFetchRecipes } from '../../hooks/useFetchRecipes';
-import LoadingIndicator from '../atoms/LoadingIndicator';
-import ErrorMessage from '../atoms/ErrorMessage';
-import EmptyRecipes from '../atoms/EmptyRecipes';
-import RecipeItemCard from '../molecules/RecipeItemCard';
+import { View, FlatList } from "react-native";
+import React from "react";
+import { Receta } from "../../server/recetas.server";
+import { useFetchRecipes } from "../../hooks/useFetchRecipes";
+import LoadingIndicator from "../atoms/LoadingIndicator";
+import ErrorMessage from "../atoms/ErrorMessage";
+import EmptyRecipes from "../atoms/EmptyRecipes";
+import RecipeItemCard from "../molecules/RecipeItemCard";
 
 const RecipeCard = () => {
   const { recetas, loading, error, handleRetry } = useFetchRecipes();
@@ -23,7 +23,7 @@ const RecipeCard = () => {
         scrollEnabled={false}
         numColumns={2}
         columnWrapperStyle={{
-          justifyContent: 'space-between',
+          justifyContent: "space-between",
         }}
         contentContainerStyle={{
           paddingBottom: 20,

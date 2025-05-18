@@ -1,15 +1,15 @@
 // components/ProtectedRoute.tsx
-import { useContext, useEffect } from 'react';
-import { router } from 'expo-router';
-import { AuthContext } from '../context/AuthContext';
+import { useContext, useEffect } from "react";
+import { router } from "expo-router";
+import { AuthContext } from "../context/AuthContext";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user } = useContext(AuthContext);
-  console.log('hola', user);
-  
-  useEffect(() => { 
+  console.log("hola", user);
+
+  useEffect(() => {
     if (!user) {
-      router.replace('/auth');
+      router.replace("/auth");
     }
   }, [user]);
 

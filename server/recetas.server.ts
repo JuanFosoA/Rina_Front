@@ -77,7 +77,7 @@ const safeFetch = async (input: RequestInfo, init?: RequestInit) => {
 };
 
 export const getRecetas = async (
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<Receta[]>> => {
   if (!token) return unauthorizedResponse();
 
@@ -89,7 +89,7 @@ export const getRecetas = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   if (!ok) {
@@ -108,7 +108,7 @@ export const getRecetas = async (
 export const crearRecetaConImagen = async (
   recetaData: Omit<Receta, "id">,
   imagenUri: string | null,
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<Receta>> => {
   if (!token) return unauthorizedResponse();
 
@@ -160,7 +160,7 @@ export const crearRecetaConImagen = async (
 
 export const getRecetaById = async (
   id: string,
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<Receta>> => {
   if (!token) return unauthorizedResponse();
 
@@ -172,7 +172,7 @@ export const getRecetaById = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   if (!ok) {

@@ -1,12 +1,19 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "69a297c6-7f12-43c9-ad52-527c8b8f27f3",
+  "id": "45e203fc-99f4-4526-8631-bbf112a69662",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "cronology": {
       "name": "cronology",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
         "table": {
           "name": "table",
           "type": "text",
@@ -22,7 +29,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "cronology_table_unique": {
+          "name": "cronology_table_unique",
+          "columns": [
+            "table"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

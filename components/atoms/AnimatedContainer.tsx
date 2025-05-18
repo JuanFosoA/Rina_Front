@@ -1,8 +1,8 @@
-import Animated from 'react-native-reanimated';
-import React, { ReactNode } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import Animated from "react-native-reanimated";
+import React, { ReactNode } from "react";
+import { StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 const ITEM_WIDTH = width * 0.8;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.6;
 
@@ -18,7 +18,10 @@ interface AnimatedContainerProps {
   animatedStyle: any;
 }
 
-const AnimatedContainer: React.FC<AnimatedContainerProps> = ({ children, animatedStyle }) => {
+const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
+  children,
+  animatedStyle,
+}) => {
   return (
     <Animated.View
       testID="animated-container"

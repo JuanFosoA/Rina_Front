@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
 
 type Props = {
   day: string;
@@ -7,11 +7,10 @@ type Props = {
 };
 
 const DayContainer = ({ day, children, style }: Props) => (
-  <View
-    className="bg-[#faf6eb] rounded-full items-center"
-    style={style}
-  >
-    <Text className="text-secondary mb-4 text-lg font-semibold capitalize">{day}</Text>
+  <View className="bg-[#faf6eb] rounded-full items-center" style={style}>
+    <Text className="text-secondary mb-4 text-lg font-semibold capitalize">
+      {day}
+    </Text>
     {children}
   </View>
 );

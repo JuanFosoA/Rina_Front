@@ -6,7 +6,7 @@ import { z } from "zod";
 import { registerSchema } from "../../validations/schemas";
 import { authStyles } from "../../components/tokens";
 import { register } from "../../server/auth.server";
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -22,9 +22,12 @@ export default function RegisterModule() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await register(data.name, data.user, data.email, data.password);
-      router.replace('/auth/login');
+      router.replace("/auth/login");
     } catch (error) {
-      Alert.alert("Error", error instanceof Error ? error.message : "Error desconocido");
+      Alert.alert(
+        "Error",
+        error instanceof Error ? error.message : "Error desconocido",
+      );
     }
   };
 
@@ -35,40 +38,72 @@ export default function RegisterModule() {
         control={control}
         name="name"
         render={({ field: { onChange, value } }) => (
-          <TextInput className={authStyles.input} placeholder="Nombre" onChangeText={onChange} value={value} />
+          <TextInput
+            className={authStyles.input}
+            placeholder="Nombre"
+            onChangeText={onChange}
+            value={value}
+          />
         )}
       />
-      {errors.name && <Text className={authStyles.errorText}>{errors.name.message}</Text>}
-      
+      {errors.name && (
+        <Text className={authStyles.errorText}>{errors.name.message}</Text>
+      )}
+
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange, value } }) => (
-          <TextInput className={authStyles.input} placeholder="Correo" onChangeText={onChange} value={value} keyboardType="email-address" />
+          <TextInput
+            className={authStyles.input}
+            placeholder="Correo"
+            onChangeText={onChange}
+            value={value}
+            keyboardType="email-address"
+          />
         )}
       />
-      {errors.email && <Text className={authStyles.errorText}>{errors.email.message}</Text>}
+      {errors.email && (
+        <Text className={authStyles.errorText}>{errors.email.message}</Text>
+      )}
 
       <Controller
         control={control}
         name="user"
         render={({ field: { onChange, value } }) => (
-          <TextInput className={authStyles.input} placeholder="Usuario" onChangeText={onChange} value={value} />
+          <TextInput
+            className={authStyles.input}
+            placeholder="Usuario"
+            onChangeText={onChange}
+            value={value}
+          />
         )}
       />
-      {errors.user && <Text className={authStyles.errorText}>{errors.user.message}</Text>}
+      {errors.user && (
+        <Text className={authStyles.errorText}>{errors.user.message}</Text>
+      )}
 
       <Controller
         control={control}
         name="password"
         render={({ field: { onChange, value } }) => (
-          <TextInput className={authStyles.input} placeholder="Contraseña" onChangeText={onChange} value={value} secureTextEntry />
+          <TextInput
+            className={authStyles.input}
+            placeholder="Contraseña"
+            onChangeText={onChange}
+            value={value}
+            secureTextEntry
+          />
         )}
       />
-      {errors.password && <Text className={authStyles.errorText}>{errors.password.message}</Text>}
+      {errors.password && (
+        <Text className={authStyles.errorText}>{errors.password.message}</Text>
+      )}
 
-
-      <TouchableOpacity className={authStyles.button} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity
+        className={authStyles.button}
+        onPress={handleSubmit(onSubmit)}
+      >
         <Text className={authStyles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
     </View>

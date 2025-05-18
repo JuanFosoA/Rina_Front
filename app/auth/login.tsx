@@ -1,10 +1,8 @@
-import React from 'react'
-import LoginModule from '../../modules/auth/Login'
+import React from "react";
+import LoginModule from "../../modules/auth/Login";
 
 const LoginPage = () => {
-  return (
-    <LoginModule/>
-  )
-}
+  return <LoginModule />;
+};
 
-export default LoginPage
+export default LoginPage;

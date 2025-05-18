@@ -36,4 +36,3 @@ export interface Menu {
     [comida: string]: string;
   };
 }
-

@@ -1,8 +1,14 @@
 // MenuCard.tsx
-import React from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { Pressable, Text, StyleSheet } from "react-native";
 
-export default function MenuCard({ item, onPress }: { item: any, onPress: () => void }) {
+export default function MenuCard({
+  item,
+  onPress,
+}: {
+  item: any;
+  onPress: () => void;
+}) {
   return (
     <Pressable style={styles.card} onPress={onPress}>
       <Text style={styles.title}>{item.title}</Text>
@@ -15,11 +21,11 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     padding: 16,
-    backgroundColor: '#faf6eb',
+    backgroundColor: "#faf6eb",
     borderRadius: 10,
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 18,
   },
 });

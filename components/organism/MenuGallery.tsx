@@ -1,15 +1,14 @@
-import { FlatList, View, StyleSheet } from 'react-native';
-import React from 'react';
-import MenuCard from '../molecules/MenuCard';
-import { useRouter } from 'expo-router';
-import { useFetchMenu } from '../../hooks/useFetchMenu';
-import MenuLoadingIndicator from '../atoms/MenuLoadingIndicator';
-import MenuErrorMessage from '../atoms/MenuErrorMessage';
+import { FlatList, View, StyleSheet } from "react-native";
+import React from "react";
+import MenuCard from "../molecules/MenuCard";
+import { useRouter } from "expo-router";
+import { useFetchMenu } from "../../hooks/useFetchMenu";
+import MenuLoadingIndicator from "../atoms/MenuLoadingIndicator";
+import MenuErrorMessage from "../atoms/MenuErrorMessage";
 
 export default function MenuGallery() {
   const { data, loading, error } = useFetchMenu();
   const router = useRouter();
-
   const handlePress = (id: string) => {
     router.push(`(menu)/${id}`);
   };

@@ -7,16 +7,14 @@ export const login = async (email: string, password: string) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: email,
-        password: password 
-        }),
+        password: password,
+      }),
     });
 
-    
     const token = await response.headers.get("Authorization");
     const data = await response.json();
-    if (!response.ok)
-      throw new Error(data|| "Error al iniciar sesión");
-    
+    if (!response.ok) throw new Error(data || "Error al iniciar sesión");
+
     return { token: token?.replace("Bearer ", ""), body: data };
   } catch (error) {
     throw error;
@@ -27,7 +25,7 @@ export const register = async (
   name: string,
   user: string,
   email: string,
-  password: string
+  password: string,
 ) => {
   try {
     const response = await fetch(authToken.register, {
@@ -38,10 +36,10 @@ export const register = async (
         username: user,
         email: email,
         password: password,
-        roles: []
+        roles: [],
       }),
-    }); 
-    
+    });
+
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "Error al registrarse");
 

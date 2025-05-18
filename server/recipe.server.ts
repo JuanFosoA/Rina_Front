@@ -9,9 +9,9 @@ interface Recipe {
 
 export const fetchRecipeById = async (
   id: string,
-  token: string | null
+  token: string | null,
 ): Promise<Recipe> => {
-  console.log(id)
+  console.log(id);
   try {
     const response = await fetch(recipeToken.getId + id, {
       method: "GET",

@@ -1,40 +1,54 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useSQLiteContext } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import * as schema from "../db/schema";
 import { getRecetas, Receta } from "../server/recetas.server";
 import { apiFast } from "../server/token";
+import { saveToCache, getFromCache } from "../lib/fetchWithCache";
 
 export function useFetchRecipes() {
   const { userToken } = useAuth();
+  const rawDb = useSQLiteContext();
+
+  // Memoizamos db para que no cambie en cada render
+  const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
+
   const [recetas, setRecetas] = useState<Receta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
-  const fetchRecipes = async () => {
+  const fetchRecipes = useCallback(async () => {
     try {
       if (!userToken) {
         throw new Error("No se encontró token de autenticación");
       }
+
       setLoading(true);
       setError(null);
 
       const response = await getRecetas(userToken);
 
-      if (response.error) {
-        throw new Error(response.error);
+      let recetasData: Receta[] = [];
+
+      if (response.status === 200 && response.data) {
+        recetasData = response.data;
+        await saveToCache(db, schema.recetas, recetasData, "getRecetas");
+      } else {
+        const fallbackData = await getFromCache(db, schema.recetas);
+        recetasData = fallbackData[0] || [];
+        console.warn("Mostrando recetas desde caché");
       }
 
-      if (response.data) {
-        const recetasConImagen = response.data.map((receta) => ({
-          ...receta,
-          imagenNombre: receta.imagenNombre
-            ? `${apiFast}uploads/${receta.imagenNombre}`
-            : null,
-        }));
-        setRecetas(recetasConImagen);
-      } else {
-        throw new Error("No se recibieron datos de recetas");
-      }
+      const recetasConImagen = recetasData.map((receta) => ({
+        ...receta,
+        imagenNombre: receta.imagenNombre
+          ? `${apiFast}uploads/${receta.imagenNombre}`
+          : null,
+      }));
+
+      setRecetas(recetasConImagen);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Error desconocido";
@@ -43,11 +57,13 @@ export function useFetchRecipes() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userToken, db]);
 
   useEffect(() => {
-    fetchRecipes();
-  }, [userToken, retryCount]);
+    if (userToken) {
+      fetchRecipes();
+    }
+  }, [fetchRecipes, retryCount, userToken]);
 
   const handleRetry = () => {
     setRetryCount((prev) => prev + 1);

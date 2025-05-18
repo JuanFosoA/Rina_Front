@@ -16,15 +16,21 @@ const MenuDetail = () => {
   return (
     <ScrollView className="bg-white h-full">
       <View className="p-6">
-        <Text className="text-2xl font-bold mb-4 text-center">Detalle del Menú</Text>
+        <Text className="text-2xl font-bold mb-4 text-center">
+          Detalle del Menú
+        </Text>
 
         {menu &&
           Object.entries(menu)
             .filter(([_, comidas]) => comidas != null)
             .map(([dia, comidas]) => (
-              <MenuDaySection key={dia} dia={dia} comidas={comidas} recipes={recipes} />
+              <MenuDaySection
+                key={dia}
+                dia={dia}
+                comidas={comidas}
+                recipes={recipes}
+              />
             ))}
-
 
         {listaCompras && <ShoppingList lista={listaCompras} />}
       </View>

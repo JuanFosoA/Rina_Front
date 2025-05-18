@@ -1,10 +1,10 @@
-import Drawer from 'expo-router/drawer';
-import React, { useEffect } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import CustomDrawerContent from '../../components/organism/CustomDrawerContent';
-import { router, useRootNavigationState } from 'expo-router';
-import { useAuth } from '../../context/AuthContext';
-import { ActivityIndicator, View } from 'react-native';
+import Drawer from "expo-router/drawer";
+import React, { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import CustomDrawerContent from "../../components/organism/CustomDrawerContent";
+import { router, useRootNavigationState } from "expo-router";
+import { useAuth } from "../../context/AuthContext";
+import { ActivityIndicator, View } from "react-native";
 
 const DrawerLayout = () => {
   const rootNavigationState = useRootNavigationState();
@@ -21,7 +21,7 @@ const DrawerLayout = () => {
     }
   }, [rootNavigationState?.key, isAuthenticated, isLoading]);
 
-  // Tambien tengo en cuenta el estado de la carga porque por un instante entre 
+  // Tambien tengo en cuenta el estado de la carga porque por un instante entre
   // la verificación de token y la pantalla de carga, se logra ver el index entonces
   // mejor evito que se renderice cualquier vista hasta estar seguro del resultado.
   if (isLoading || rootNavigationState?.key === undefined) {

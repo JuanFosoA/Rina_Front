@@ -1,10 +1,8 @@
-import RegisterModule from '../../modules/auth/Register'
-import React from 'react'
+import RegisterModule from "../../modules/auth/Register";
+import React from "react";
 
 const RegisterPage = () => {
-  return (
-    <RegisterModule/>
-  )
-}
+  return <RegisterModule />;
+};
 
-export default RegisterPage
+export default RegisterPage;

@@ -1,6 +1,5 @@
 import { apiFast, menuData } from "./token";
 
-
 interface Cantidad {
   valor: number;
   unidad: string;
@@ -23,12 +22,10 @@ interface ApiResponse<T> {
   error?: string;
 }
 
-
 const unauthorizedResponse = <T>(): ApiResponse<T> => ({
   status: 401,
   error: "No estás autenticado",
 });
-
 
 const safeFetch = async (input: RequestInfo, init?: RequestInit) => {
   try {
@@ -56,9 +53,8 @@ const safeFetch = async (input: RequestInfo, init?: RequestInit) => {
   }
 };
 
-
 export const getMenu = async (
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<any>> => {
   if (!token) return unauthorizedResponse();
 
@@ -85,7 +81,7 @@ export const getMenu = async (
 
 export const getListaMenu = async (
   menu: Menu,
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<IngredienteCompra[]>> => {
   if (!token) return unauthorizedResponse();
 
@@ -113,11 +109,12 @@ export const getListaMenu = async (
 
 export const crearMenu = async (
   menuDataToSend: object,
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<any>> => {
   if (!token) return unauthorizedResponse();
 
-  const body = JSON.stringify({ dias: menuDataToSend });
+  const body = JSON.stringify({ menuDataToSend });
+  console.log("payload", body);
 
   const { ok, response, data, error } = await safeFetch(menuData.crearMenu, {
     method: "POST",
@@ -143,7 +140,7 @@ export const crearMenu = async (
 
 export const getMenuById = async (
   id: string,
-  token: string | null
+  token: string | null,
 ): Promise<ApiResponse<any>> => {
   if (!token) return unauthorizedResponse();
 
@@ -155,7 +152,7 @@ export const getMenuById = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   if (!ok) {

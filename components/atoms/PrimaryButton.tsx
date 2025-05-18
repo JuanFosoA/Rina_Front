@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text } from "react-native";
 
 type Props = {
   title: string;
@@ -8,7 +8,7 @@ type Props = {
 
 const PrimaryButton = ({ title, onPress, style }: Props) => (
   <TouchableOpacity
-    className="bg-fith rounded-full p-4 my-2 w-32 items-center"
+    className="bg-fith rounded-full p-4 my-12 w-32 items-center mx-2"
     style={style}
     onPress={onPress}
   >

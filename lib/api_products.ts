@@ -1,7 +1,7 @@
-const API  = ''
+const API = "";
 
 export const getRecipes = () => {
-    return fetch(`${API}/recipes`, {
-        method: 'GET'
-    })
-}
+  return fetch(`${API}/recipes`, {
+    method: "GET",
+  });
+};

@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { validateToken } from "../server/auth.server";
@@ -20,12 +26,12 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); 
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string | null>(null);
   const router = useRouter();
-  
+
   // Los problemas al renderizar se solucionaron simplemente usando useEffect ya que no forzamos
   // el cambio de ruta o la carga de una ruta antes o durante la carga de otra con mayor prioridad
   // o en cola
@@ -43,11 +49,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggingIn(true);
     try {
       const isValid = await validateToken(token);
-      if(isValid){
-        await AsyncStorage.setItem('@myToken', token);
+      if (isValid) {
+        await AsyncStorage.setItem("@myToken", token);
         setUserToken(token);
         setIsAuthenticated(true);
-        router.replace('/');
+        router.replace("/");
       }
     } finally {
       setIsLoggingIn(false);
@@ -55,7 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem('@myToken');
+    await AsyncStorage.removeItem("@myToken");
     setUserToken(null);
     setIsAuthenticated(false);
     router.replace("/auth");
@@ -73,15 +79,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ 
-      isAuthenticated, 
-      isLoading, 
-      isLoggingIn, 
-      userToken,
-      login_AuthContext, 
-      logout,
-      setUserToken
-    }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        isLoading,
+        isLoggingIn,
+        userToken,
+        login_AuthContext,
+        logout,
+        setUserToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

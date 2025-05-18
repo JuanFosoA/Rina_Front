@@ -1,7 +1,7 @@
-import { ScrollView, View } from 'react-native';
-import React from 'react';
-import { FoodCategory } from '../../data/CategoriesData';
-import CategoryButton from '../atoms/CategoryButton';
+import { ScrollView, View } from "react-native";
+import React from "react";
+import { FoodCategory } from "../../data/CategoriesData";
+import CategoryButton from "../atoms/CategoryButton";
 
 const CategoriesFilter = () => {
   return (

@@ -4,6 +4,8 @@
     "strict": true,
     "paths": {
       "@assets/*": ["./assets/*"]
-    }
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   }
 }

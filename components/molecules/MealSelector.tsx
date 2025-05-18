@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Modal, FlatList, View, Text } from 'react-native';
-import { useAuth } from '../../context/AuthContext';
-import MealButton from '../atoms/MealButton';
-import PrimaryButton from '../atoms/PrimaryButton';
-import { GetRecetasCached } from '../../lib/fetchWithCache';
+import { useState } from "react";
+import { Modal, FlatList, View, Text } from "react-native";
+import { useAuth } from "../../context/AuthContext";
+import MealButton from "../atoms/MealButton";
+import PrimaryButton from "../atoms/PrimaryButton";
+import { useRecipes } from "../../hooks/useRecipes";
 
 type MealSelectorProps = {
   day: string;
@@ -12,56 +12,29 @@ type MealSelectorProps = {
   onSelect: (day: string, mealType: string, recipeId: string) => void;
 };
 
-type Recipe = {
-  id: string;
-  name: string;
-};
-
-export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: MealSelectorProps) => {
+export const MealSelector = ({
+  day,
+  mealType,
+  selectedRecipeId,
+  onSelect,
+}: MealSelectorProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [loading, setLoading] = useState(false);
   const { userToken } = useAuth();
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      if (!modalVisible) return;
-
-      setLoading(true);
-      try {
-        const response = await GetRecetasCached(userToken);
-        if (response.data) {
-          const recipeList = response.data.map((receta: { id: string; nombre: string; }) => ({
-            id: receta.id,
-            name: receta.nombre,
-          }));
-          setRecipes(recipeList);
-        } else {
-          console.error('Error al obtener recetas:', response.error);
-          setRecipes([]);
-        }
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-        setRecipes([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecipes();
-  }, [modalVisible, userToken]);
+  const { recipes, loading } = useRecipes(userToken, modalVisible);
 
   const handleSelect = (recipeId: string) => {
     onSelect(day, mealType, recipeId);
     setModalVisible(false);
   };
 
-  const selectedName = recipes.find(r => r.id === selectedRecipeId)?.name || '';
+  const selectedName =
+    recipes.find((r) => r.id === selectedRecipeId)?.name || "";
 
   return (
     <>
       <MealButton
-        label={selectedRecipeId ? selectedName : 'Seleccionar receta'}
+        label={selectedRecipeId ? selectedName : "Seleccionar receta"}
         selected={!!selectedRecipeId}
         onPress={() => setModalVisible(true)}
       />
@@ -71,14 +44,14 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View className="flex-1 justify-center items-center bg-black bg-opacity-60">
-          <View className="bg-white p-6 rounded-xl w-11/12 max-h-[80%]">
+        <View className="flex-1 justify-center items-center bg-black/20 bg-opacity-40 px-5">
+          <View className="bg-white rounded-2xl p-6 w-5/6 max-h-[90%] shadow-lg">
             <Text className="text-xl font-bold mb-4 capitalize text-center">
               Selecciona una receta para {mealType}
             </Text>
 
             {loading ? (
-              <Text className="text-center">Cargando recetas...</Text>
+              <Text className="text-center my-4">Cargando recetas...</Text>
             ) : (
               <FlatList
                 data={recipes}
@@ -87,11 +60,12 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
                   <PrimaryButton
                     title={item.name}
                     onPress={() => handleSelect(item.id)}
-                    style={{ marginVertical: 6 }}
+                    style={{ marginVertical: 8 }}
                   />
                 )}
-                contentContainerStyle={{ paddingBottom: 10 }}
+                contentContainerStyle={{ paddingBottom: 12 }}
                 showsVerticalScrollIndicator={false}
+                style={{ maxHeight: 300 }}
               />
             )}
 
@@ -99,8 +73,9 @@ export const MealSelector = ({ day, mealType, selectedRecipeId, onSelect }: Meal
               title="Cancelar"
               onPress={() => setModalVisible(false)}
               style={{
-                marginTop: 12,
-                backgroundColor: '#e5e7eb',
+                marginTop: 20,
+                backgroundColor: "#e5e7eb",
+                borderRadius: 12,
               }}
             />
           </View>

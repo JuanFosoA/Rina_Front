@@ -8,7 +8,8 @@ export const recetas = sqliteTable("recetas", {
   json: text({ mode: "json" }).notNull(),
 });
 export const cronology = sqliteTable("cronology", {
-  name: text("table").notNull(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("table").notNull().unique(),
   lastime: integer({ mode: "timestamp" }).notNull(),
 });
 
