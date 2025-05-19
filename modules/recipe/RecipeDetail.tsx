@@ -1,60 +1,15 @@
+import React from "react";
 import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { useAuth } from "../../context/AuthContext";
-import { fetchRecipeById } from "../../server/recipe.server";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
-interface NutritionalInfo {
-  calorias: number;
-  carbohidratos: string;
-  grasas: string;
-  proteinas: string;
-}
-
-interface Ingredient {
-  cantidad: any;
-  nombre: string;
-}
-
-interface Instruction {
-  orden: number;
-  paso: string;
-}
-
-interface Recipe {
-  id: string;
-  nombre: string;
-  categoria: string[];
-  imagenNombre: string | null;
-  informacionNutricional: NutritionalInfo;
-  ingredientes: Ingredient[];
-  instrucciones: Instruction[];
-  porciones: number;
-  tiempoPreparacion: number;
-}
+import { useAuth } from "../../context/AuthContext";
+import { useRecipeDetail } from "../../hooks/useRecipeDetail";
 
 const RecipeDetail: React.FC = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const { userToken } = useAuth();
 
-  useEffect(() => {
-    const getRecipe = async () => {
-      try {
-        const data = await fetchRecipeById(id, userToken);
-        setRecipe(data as unknown as Recipe);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getRecipe();
-  }, [id, userToken]);
+  const { recipe, loading, error } = useRecipeDetail(id, userToken);
 
   if (loading) {
     return (
@@ -67,9 +22,7 @@ const RecipeDetail: React.FC = () => {
   if (error || !recipe) {
     return (
       <View className="flex-1 justify-center items-center bg-red-400">
-        <Text className="text-white text-xl">
-          {error || "Receta no encontrada"}
-        </Text>
+        <Text className="text-white text-xl">{error || "Receta no encontrada"}</Text>
       </View>
     );
   }
@@ -100,20 +53,18 @@ const RecipeDetail: React.FC = () => {
 
           <Text className="font-bold mt-4">Información Nutricional:</Text>
           <Text>Calorías: {recipe.informacionNutricional.calorias}</Text>
-          <Text>
-            Carbohidratos: {recipe.informacionNutricional.carbohidratos}
-          </Text>
+          <Text>Carbohidratos: {recipe.informacionNutricional.carbohidratos}</Text>
           <Text>Grasas: {recipe.informacionNutricional.grasas}</Text>
           <Text>Proteínas: {recipe.informacionNutricional.proteinas}</Text>
 
           <Text className="font-bold mt-4">Ingredientes:</Text>
-          {recipe.ingredientes.map((ing, index) => (
+          {recipe.ingredientes.map((ing: { nombre: string }, index: number) => (
             <Text key={index}>- {ing.nombre}</Text>
           ))}
 
           <Text className="font-bold mt-4">Instrucciones:</Text>
-          {recipe.instrucciones.map((step) => (
-            <Text key={step.orden}>
+          {recipe.instrucciones.map((step: { orden: any; paso: any }, idx: number) => (
+            <Text key={String(step.orden ?? idx)}>
               {step.orden}. {step.paso}
             </Text>
           ))}

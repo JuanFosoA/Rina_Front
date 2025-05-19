@@ -4,7 +4,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import * as schema from "../db/schema";
 import { getMenu } from "../server/menu.server";
-import { saveToCache, getFromCache } from "../lib/fetchWithCache";
+import { saveArrayToCache, getArrayFromCache } from "../lib/fetchWithCache";
 
 export function useFetchMenu() {
   const { userToken } = useAuth();
@@ -33,9 +33,9 @@ export function useFetchMenu() {
           nombre: receta.nombre,
           ...receta,
         }));
-        await saveToCache(db, schema.menus, recetas, "getMenu");
+        await saveArrayToCache(db, schema.menusArray, recetas, "getMenu");
       } else {
-        const fallbackData = await getFromCache(db, schema.menus);
+        const fallbackData = await getArrayFromCache(db, schema.menusArray);
         recetas = fallbackData || [];
         console.warn("Mostrando recetas desde caché");
       }

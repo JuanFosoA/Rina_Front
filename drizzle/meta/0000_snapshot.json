@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "45e203fc-99f4-4526-8631-bbf112a69662",
+  "id": "673d605e-2e12-4da0-a2a9-61fcec9e0e3e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "cronology": {
@@ -32,7 +32,9 @@
       "indexes": {
         "cronology_table_unique": {
           "name": "cronology_table_unique",
-          "columns": ["table"],
+          "columns": [
+            "table"
+          ],
           "isUnique": true
         }
       },
@@ -52,7 +54,40 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "menus_json_unique": {
+          "name": "menus_json_unique",
+          "columns": [
+            "json"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "menusArray": {
+      "name": "menusArray",
+      "columns": {
+        "json": {
+          "name": "json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "menusArray_json_unique": {
+          "name": "menusArray_json_unique",
+          "columns": [
+            "json"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -69,7 +104,40 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "recetas_json_unique": {
+          "name": "recetas_json_unique",
+          "columns": [
+            "json"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "recetasArray": {
+      "name": "recetasArray",
+      "columns": {
+        "json": {
+          "name": "json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "recetasArray_json_unique": {
+          "name": "recetasArray_json_unique",
+          "columns": [
+            "json"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

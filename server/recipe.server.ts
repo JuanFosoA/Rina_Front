@@ -1,6 +1,7 @@
 import { recipeToken } from "./token";
 
 interface Recipe {
+  _id: any;
   id: string;
   name: string;
   time: string;
