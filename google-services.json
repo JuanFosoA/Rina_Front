@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "602450591286",
+    "project_id": "rina-notifications",
+    "storage_bucket": "rina-notifications.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602450591286:android:283622ebff0f8456ebe297",
+        "android_client_info": {
+          "package_name": "com.juanfosoa.rina"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHEdQQqC3S_8mJV0Swg5lfBnu6yA2K0xY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
