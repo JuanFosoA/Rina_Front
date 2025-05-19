@@ -1,12 +1,15 @@
 import { useState, useEffect, useMemo } from "react";
 import { getListaMenu, getMenuById } from "../../server/menu.server";
-import { fetchRecipeById } from "../../server/recipe.server";
 import { useAuth } from "../../context/AuthContext";
 import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import * as schema from "../../db/schema";
 import { Receta, IngredienteCompra } from "./types";
-import { saveToCache, getFromCache } from "../../lib/fetchWithCache";
+import {
+  saveSingleToCache,
+  getSingleFromCacheById,
+} from "../../lib/fetchWithCache";
+import { fetchRecipeWithCache } from "../../lib/fetchRecipeWithCache";
 
 export function useMenuDetail(id: string) {
   const { userToken } = useAuth();
@@ -35,10 +38,13 @@ export function useMenuDetail(id: string) {
 
         if (result.status === 200 && result.data) {
           menuData = result.data;
-          await saveToCache(db, schema.menus, menuData, "getMenuById");
+          await saveSingleToCache(db, schema.menus, menuData, "menus");
         } else {
-          const fallbackData = await getFromCache(db, schema.menus);
-          menuData = fallbackData.find((d: any) => d?.id === id);
+          menuData = await getSingleFromCacheById(db, schema.menus, id);
+          if (!menuData) {
+            console.warn("No se encontró menú en caché");
+            return;
+          }
           console.warn("Mostrando menú desde caché");
         }
 
@@ -52,7 +58,6 @@ export function useMenuDetail(id: string) {
 
         setMenu(dias);
 
-        // Extraemos IDs únicos de recetas que no sean cadenas vacías
         const allIds = Object.values(dias)
           .flatMap((comidas) => Object.values(comidas))
           .filter(
@@ -62,13 +67,15 @@ export function useMenuDetail(id: string) {
         const uniqueIds = [...new Set(allIds)];
 
         const recetasData = await Promise.all(
-          uniqueIds.map(async (recetaId) => {
-            const receta = await fetchRecipeById(recetaId, userToken);
-            return receta as unknown as Receta;
-          })
+          uniqueIds.map((id) => fetchRecipeWithCache(id, userToken, db))
         );
 
-        const recetaMap = Object.fromEntries(recetasData.map((r) => [r.id, r]));
+        const recetaMap = Object.fromEntries(
+          recetasData
+            .filter((r): r is Receta => r !== null)
+            .map((r) => [r.id, r])
+        );
+
         setRecipes(recetaMap);
 
         const listaResponse = await getListaMenu(dias, userToken);

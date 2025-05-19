@@ -3,7 +3,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import * as schema from "../db/schema";
 import { getRecetas } from "../server/recetas.server";
-import { saveToCache, getFromCache } from "../lib/fetchWithCache";
+import { saveArrayToCache, getArrayFromCache } from "../lib/fetchWithCache";
 
 type Recipe = {
   id: string;
@@ -17,16 +17,13 @@ type RawRecipe = {
 
 export const useRecipes = (userToken: string | null, enabled: boolean) => {
   const rawDb = useSQLiteContext();
-
-  // Memoizar db para que no cambie en cada render
   const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!enabled) return;
-    if (!userToken) return;
+    if (!enabled || !userToken) return;
 
     const fetchRecipes = async () => {
       setLoading(true);
@@ -37,10 +34,15 @@ export const useRecipes = (userToken: string | null, enabled: boolean) => {
 
         if (result.status === 200 && result.data) {
           rawData = result.data as RawRecipe[];
-          await saveToCache(db, schema.recetas, rawData, "getRecetas");
+          await saveArrayToCache(
+            db,
+            schema.recetasArray,
+            rawData,
+            "recetasList"
+          );
         } else {
-          const fallbackData = await getFromCache(db, schema.recetas);
-          rawData = fallbackData[0] || [];
+          const fallbackData = await getArrayFromCache(db, schema.recetasArray);
+          rawData = fallbackData || [];
           console.warn("Mostrando recetas desde caché");
         }
 

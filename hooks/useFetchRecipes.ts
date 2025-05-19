@@ -5,13 +5,12 @@ import { drizzle } from "drizzle-orm/expo-sqlite";
 import * as schema from "../db/schema";
 import { getRecetas, Receta } from "../server/recetas.server";
 import { apiFast } from "../server/token";
-import { saveToCache, getFromCache } from "../lib/fetchWithCache";
+import { saveArrayToCache, getArrayFromCache } from "../lib/fetchWithCache";
 
 export function useFetchRecipes() {
   const { userToken } = useAuth();
   const rawDb = useSQLiteContext();
 
-  // Memoizamos db para que no cambie en cada render
   const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
 
   const [recetas, setRecetas] = useState<Receta[]>([]);
@@ -34,10 +33,15 @@ export function useFetchRecipes() {
 
       if (response.status === 200 && response.data) {
         recetasData = response.data;
-        await saveToCache(db, schema.recetas, recetasData, "getRecetas");
+        await saveArrayToCache(
+          db,
+          schema.recetasArray,
+          recetasData,
+          "recetasArray"
+        );
       } else {
-        const fallbackData = await getFromCache(db, schema.recetas);
-        recetasData = fallbackData[0] || [];
+        const fallbackData = await getArrayFromCache(db, schema.recetasArray);
+        recetasData = fallbackData || [];
         console.warn("Mostrando recetas desde caché");
       }
 
