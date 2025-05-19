@@ -1,5 +1,5 @@
 //export const apiFast = "https://zzzbuilds-server.lat/";
-export const apiFast = "https://spending-fields-obviously-theorem.trycloudflare.com/";
+export const apiFast = "https://agree-universal-advocacy-dare.trycloudflare.com/";
 export const authToken = {
   login: apiFast + "api/auth/signin",
   register: apiFast + "api/auth/signup",
@@ -21,3 +21,7 @@ export const menuData = {
   crearMenu: apiFast + "api/menus",
   getListaMenu: apiFast + "api/menus/listaDeCompra",
 };
+
+export const tokenData = {
+  setToken: apiFast +"api/expo-tokens",
+}

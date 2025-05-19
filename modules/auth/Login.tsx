@@ -15,11 +15,14 @@ import { authStyles } from "../../components/tokens";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { login } from "../../server/auth.server";
 import { useAuth } from "../../context/AuthContext";
+import { usePushNotifications } from "../../hooks/usePushNotifications";
+import { sendExpoTokenToBackend } from "../../server/expo.server";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginModule() {
   const { login_AuthContext, isLoggingIn } = useAuth();
+  const { expoPushToken } = usePushNotifications();
   const {
     control,
     handleSubmit,
@@ -32,9 +35,14 @@ export default function LoginModule() {
     try {
       const response = await login(data.email, data.password);
       const token = response.token;
+      
       if (typeof token === "string") {
         await AsyncStorage.setItem("@myToken", token);
         await login_AuthContext(token);
+
+        if (expoPushToken?.data) {
+          await sendExpoTokenToBackend(token, expoPushToken.data);
+        }
       } else {
         throw new Error("Token inválido o no recibido");
       }
