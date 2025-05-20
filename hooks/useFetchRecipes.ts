@@ -37,7 +37,7 @@ export function useFetchRecipes() {
           db,
           schema.recetasArray,
           recetasData,
-          "recetasArray"
+          "recetasArray",
         );
       } else {
         const fallbackData = await getArrayFromCache(db, schema.recetasArray);

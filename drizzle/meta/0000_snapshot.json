@@ -32,9 +32,7 @@
       "indexes": {
         "cronology_table_unique": {
           "name": "cronology_table_unique",
-          "columns": [
-            "table"
-          ],
+          "columns": ["table"],
           "isUnique": true
         }
       },
@@ -57,9 +55,7 @@
       "indexes": {
         "menus_json_unique": {
           "name": "menus_json_unique",
-          "columns": [
-            "json"
-          ],
+          "columns": ["json"],
           "isUnique": true
         }
       },
@@ -82,9 +78,7 @@
       "indexes": {
         "menusArray_json_unique": {
           "name": "menusArray_json_unique",
-          "columns": [
-            "json"
-          ],
+          "columns": ["json"],
           "isUnique": true
         }
       },
@@ -107,9 +101,7 @@
       "indexes": {
         "recetas_json_unique": {
           "name": "recetas_json_unique",
-          "columns": [
-            "json"
-          ],
+          "columns": ["json"],
           "isUnique": true
         }
       },
@@ -132,9 +124,7 @@
       "indexes": {
         "recetasArray_json_unique": {
           "name": "recetasArray_json_unique",
-          "columns": [
-            "json"
-          ],
+          "columns": ["json"],
           "isUnique": true
         }
       },

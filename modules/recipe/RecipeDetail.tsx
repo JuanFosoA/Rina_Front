@@ -22,7 +22,9 @@ const RecipeDetail: React.FC = () => {
   if (error || !recipe) {
     return (
       <View className="flex-1 justify-center items-center bg-red-400">
-        <Text className="text-white text-xl">{error || "Receta no encontrada"}</Text>
+        <Text className="text-white text-xl">
+          {error || "Receta no encontrada"}
+        </Text>
       </View>
     );
   }
@@ -53,7 +55,9 @@ const RecipeDetail: React.FC = () => {
 
           <Text className="font-bold mt-4">Información Nutricional:</Text>
           <Text>Calorías: {recipe.informacionNutricional.calorias}</Text>
-          <Text>Carbohidratos: {recipe.informacionNutricional.carbohidratos}</Text>
+          <Text>
+            Carbohidratos: {recipe.informacionNutricional.carbohidratos}
+          </Text>
           <Text>Grasas: {recipe.informacionNutricional.grasas}</Text>
           <Text>Proteínas: {recipe.informacionNutricional.proteinas}</Text>
 
@@ -63,11 +67,13 @@ const RecipeDetail: React.FC = () => {
           ))}
 
           <Text className="font-bold mt-4">Instrucciones:</Text>
-          {recipe.instrucciones.map((step: { orden: any; paso: any }, idx: number) => (
-            <Text key={String(step.orden ?? idx)}>
-              {step.orden}. {step.paso}
-            </Text>
-          ))}
+          {recipe.instrucciones.map(
+            (step: { orden: any; paso: any }, idx: number) => (
+              <Text key={String(step.orden ?? idx)}>
+                {step.orden}. {step.paso}
+              </Text>
+            ),
+          )}
         </View>
       </View>
     </ScrollView>

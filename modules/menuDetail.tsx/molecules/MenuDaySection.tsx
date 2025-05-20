@@ -57,10 +57,7 @@ const MenuDaySection = ({ dia, comidas, recipes }: MenuDaySectionProps) => {
 
         if (!receta) {
           return (
-            <Text
-              key={tipoComida}
-              className="text-red-600 mb-2 italic"
-            >
+            <Text key={tipoComida} className="text-red-600 mb-2 italic">
               Sin receta para {tipoComida}
             </Text>
           );

@@ -12,7 +12,7 @@ export async function saveSingleToCache(
   db: any,
   table: any,
   data: any,
-  name: string
+  name: string,
 ) {
   const jsonString = JSON.stringify(data);
 
@@ -39,7 +39,7 @@ export async function saveArrayToCache(
   db: any,
   table: any,
   dataArray: any[],
-  name: string
+  name: string,
 ) {
   for (const item of dataArray) {
     const jsonString = JSON.stringify(item);
@@ -69,7 +69,6 @@ function safeJsonParse(jsonStr: string): any | null {
     if (typeof parsed === "string") {
       parsed = JSON.parse(parsed);
     }
-    console.log("Parsed JSON:", parsed);
     return parsed;
   } catch {
     return null;
@@ -79,7 +78,7 @@ function safeJsonParse(jsonStr: string): any | null {
 export async function getSingleFromCacheById(
   db: any,
   table: any,
-  id: string
+  id: string,
 ): Promise<any | null> {
   const rows = await db.select().from(table);
   for (const row of rows) {

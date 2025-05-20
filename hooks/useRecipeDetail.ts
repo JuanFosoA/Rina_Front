@@ -10,7 +10,7 @@ import {
 
 export function useRecipeDetail(
   id: string | undefined,
-  userToken: string | null
+  userToken: string | null,
 ) {
   const rawDb = useSQLiteContext();
   const db = useMemo(() => drizzle(rawDb, { schema }), [rawDb]);
@@ -41,7 +41,7 @@ export function useRecipeDetail(
             db,
             schema.recetas,
             normalizedRecipe,
-            "getRecipeById"
+            "getRecipeById",
           );
         } else {
           throw new Error("No se recibió receta desde API");
@@ -53,7 +53,7 @@ export function useRecipeDetail(
           const cachedRecipe = await getSingleFromCacheById(
             db,
             schema.recetas,
-            id
+            id,
           );
 
           if (cachedRecipe) {
@@ -63,7 +63,7 @@ export function useRecipeDetail(
             setRecipe(null);
           }
         } catch (cacheError) {
-            console.error("Error al cargar receta desde caché:", cacheError);
+          console.error("Error al cargar receta desde caché:", cacheError);
           setError("Error al cargar receta desde caché");
           setRecipe(null);
         }

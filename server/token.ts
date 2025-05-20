@@ -1,5 +1,5 @@
 //export const apiFast = "https://zzzbuilds-server.lat/";
-export const apiFast = "https://wiley-biological-inclusion-teacher.trycloudflare.com/";
+export const apiFast = "https://enjoy-symptoms-autumn-bk.trycloudflare.com/";
 export const authToken = {
   login: apiFast + "api/auth/signin",
   register: apiFast + "api/auth/signup",
@@ -20,4 +20,9 @@ export const menuData = {
   getMenu: apiFast + "api/menus",
   crearMenu: apiFast + "api/menus",
   getListaMenu: apiFast + "api/menus/listaDeCompra",
+};
+
+export const weeklyMenuData = {
+  getWeeklyMenuByDate: apiFast + "api/weekly-menu/",
+  setWeeklyMenu: apiFast + "api/weekly-menu",
 };

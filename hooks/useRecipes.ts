@@ -38,7 +38,7 @@ export const useRecipes = (userToken: string | null, enabled: boolean) => {
             db,
             schema.recetasArray,
             rawData,
-            "recetasList"
+            "recetasList",
           );
         } else {
           const fallbackData = await getArrayFromCache(db, schema.recetasArray);

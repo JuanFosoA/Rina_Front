@@ -113,8 +113,7 @@ export const crearMenu = async (
 ): Promise<ApiResponse<any>> => {
   if (!token) return unauthorizedResponse();
 
-  const body = JSON.stringify( menuDataToSend);
-  console.log("payload", body);
+  const body = JSON.stringify(menuDataToSend);
 
   const { ok, response, data, error } = await safeFetch(menuData.crearMenu, {
     method: "POST",

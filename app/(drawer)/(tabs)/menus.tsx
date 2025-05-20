@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import React from "react";
 import CreateMenu from "../../../components/atoms/CreateMenu";
 import Gallery from "../../../components/organism/MenuGallery";
-import WeeklyMenuSetter from "../../../components/organism/WeeklyMenuSetter";
+import WeeklyMenuSetter from "../../../modules/weeklyMenu/components/WeeklyMenuSetter";
 
 const saved = () => {
   return (
